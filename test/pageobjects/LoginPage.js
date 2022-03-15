@@ -1,16 +1,32 @@
-
-
-const Page = require('./page');
+const {PageObject} = require("./PageObject");
 
 /**
  * sub page containing specific selectors and methods for a specific page
  */
-class LoginPage extends Page {
+class LoginPage extends PageObject {
+
     /**
      * define selectors using getter methods
      */
+
+    get url() {
+        return '/'
+    }
+
+    open () {
+        return super.open(this.url);
+    }
+
+    back() {
+        return super.back();
+    }
+
+    browserTitle() {
+        return super.title();
+    }
+
     get inputUsername () {
-        return $('#username');
+        return $('#user-name');
     }
 
     get inputPassword () {
@@ -18,13 +34,32 @@ class LoginPage extends Page {
     }
 
     get btnSubmit () {
-        return $('button[type="submit"]');
+        return $('#login-button');
     }
+
+    get lockedMessage(){
+        return $('div.error-message-container.error > h3')
+    }
+
+    get problemImage(){
+        return $('#item_4_img_link > img')
+    }
+
+    get footerImage(){
+        return $('#page_wrapper > footer > img')
+    }
+
+    // get titlePage() {
+    //     // browser.url(this.url)
+    //     // const $title = browser.getTitle()
+    //     return $('head > title')
+    // }
 
     /**
      * a method to encapsule automation code to interact with the page
      * e.g. to login using username and password
      */
+
     async login (username, password) {
         await this.inputUsername.setValue(username);
         await this.inputPassword.setValue(password);
@@ -34,9 +69,7 @@ class LoginPage extends Page {
     /**
      * overwrite specific options to adapt it to page object
      */
-    open () {
-        return super.open('login');
-    }
+
 }
 
 module.exports = new LoginPage();
