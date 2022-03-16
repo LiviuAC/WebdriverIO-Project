@@ -30,7 +30,7 @@ xdescribe('Browser Tests', () => {
             " usernames are:\nstandard_user\nlocked_out_user\nproblem_user\nperformance_glitch_user")
     });
 
-    it('should have the accepted password displayed', async () => {
+    it('should have the accepted password displayeda', async () => {
         let passwordList = []
         await LoginPage.open();
         const passwordText = await LoginPage.passwordText.getText()
