@@ -1,7 +1,7 @@
 const LoginPage = require('../pageobjects/LoginPage');
 const {CREDENTIALS} = require("../helper/credentials");
 
-xdescribe('Browser Tests', () => {
+describe('Browser Tests', () => {
 
     it('should have the "Swag Labs" title', async () => {
         await LoginPage.open();
@@ -22,29 +22,28 @@ xdescribe('Browser Tests', () => {
     });
 
     it('should have the accepted usernames displayed', async () => {
-        let usernameList = []
         await LoginPage.open();
         const usernameText = await LoginPage.usernamesText.getText()
-        usernameList.push(usernameText)
-        expect(String(usernameList).replace(/^\[(.+)\]$/,'$1')).toEqual("Accepted" +
-            " usernames are:\nstandard_user\nlocked_out_user\nproblem_user\nperformance_glitch_user")
+        expect(usernameText).toContain('Accepted usernames are:')
+        expect(usernameText).toContain(CREDENTIALS.standard)
+        expect(usernameText).toContain(CREDENTIALS.locked)
+        expect(usernameText).toContain(CREDENTIALS.problem)
+        expect(usernameText).toContain(CREDENTIALS.performance)
     });
 
     it('should have the accepted password displayed', async () => {
-        let passwordList = []
         await LoginPage.open();
         const passwordText = await LoginPage.passwordText.getText()
-        passwordList.push(passwordText)
-        expect(String(passwordList).replace(/^\[(.+)\]$/,'$1')).toEqual("Password for" +
-            " all users:\nsecret_sauce")
+        expect(passwordText).toContain("Password for all users:")
+        expect(passwordText).toContain(CREDENTIALS.password)
     });
 })
 
-xdescribe('Login Test', () => {
+describe('Login Test', () => {
 
     it('should login with valid credentials', async () => {
         await LoginPage.open();
-        await LoginPage.login(`${CREDENTIALS.standard}`, `${CREDENTIALS.password}`);
+        await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
     });
 
     it('should keep the credentials after returning to login page', async () => {
@@ -53,9 +52,9 @@ xdescribe('Login Test', () => {
         await LoginPage.back()
         const usernameField = await LoginPage.inputUsername.getText()
         const passwordField = await LoginPage.inputPassword.getText()
-        // sa vedem daca logica aceasta este buna sau daca putem folosi isEmpty(). Am incercat si nu mi-a mers
-        expect(usernameField.length).toBeGreaterThan(0)
-        expect(passwordField.length).toBeGreaterThan(0)
+        console.log(`The username field: `, usernameField)
+        expect(usernameField).toEqual('')
+        expect(passwordField).toEqual('')
     });
 
     it('should not login with locked credentials', async () => {
@@ -66,6 +65,7 @@ xdescribe('Login Test', () => {
     });
 
     it('dog thumbnail image is displayed after login with problem credentials', async () => {
+        // TODO: sa corectez TC-ul prin a compara img source-urile
         await LoginPage.open();
         await LoginPage.login(`${CREDENTIALS.problem}`, `${CREDENTIALS.password}`);
         const imageDisplayed = await LoginPage.problemImage.isDisplayed()
@@ -77,15 +77,15 @@ xdescribe('Login Test', () => {
         await LoginPage.open();
         let timeStart = new Date().getTime()
         await LoginPage.login(`${CREDENTIALS.performance}`, `${CREDENTIALS.password}`);
-        const footerImage = await LoginPage.footerImage.isDisplayed()
-        if(footerImage) {
+        const isFooterImageDisplayed = await LoginPage.footerImage.isDisplayed()
+        if(isFooterImageDisplayed) {
             timeStop = new Date().getTime()
         }
         expect(Math.abs(timeStart - timeStop)/1000).toBeLessThan(1)
     });
 });
 
-xdescribe("Login Negative Tests",  () => {
+describe("Login Negative Tests",  () => {
     it('should not login with no credentials', async () => {
         await LoginPage.open();
         await LoginPage.login(``, ``);
