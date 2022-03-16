@@ -1,12 +1,42 @@
 const LoginPage = require('../pageobjects/LoginPage');
 const {CREDENTIALS} = require("../helper/credentials");
 
-describe('Browser Tests', () => {
-    // de adaugat TC-uri pt dif elemente din interiorul paginii
+xdescribe('Browser Tests', () => {
+
     it('should have the "Swag Labs" title', async () => {
         await LoginPage.open();
         const browserTitle = await LoginPage.browserTitle()
         expect(browserTitle).toEqual('Swag Labs')
+    });
+
+    it('should have the "SWAGLABS" logo in header', async () => {
+        await LoginPage.open();
+        const swaglabsLogo = await LoginPage.swaglabsLogo.isDisplayed()
+        expect(swaglabsLogo).toBe(true)
+    });
+
+    it('should have the "SWAGLABS" mascot', async () => {
+        await LoginPage.open();
+        const swaglabsLogo = await LoginPage.swaglabsMascot.isDisplayed()
+        expect(swaglabsLogo).toBe(true)
+    });
+
+    it('should have the accepted usernames displayed', async () => {
+        let usernameList = []
+        await LoginPage.open();
+        const usernameText = await LoginPage.usernamesText.getText()
+        usernameList.push(usernameText)
+        expect(String(usernameList).replace(/^\[(.+)\]$/,'$1')).toEqual("Accepted" +
+            " usernames are:\nstandard_user\nlocked_out_user\nproblem_user\nperformance_glitch_user")
+    });
+
+    it('should have the accepted password displayed', async () => {
+        let passwordList = []
+        await LoginPage.open();
+        const passwordText = await LoginPage.passwordText.getText()
+        passwordList.push(passwordText)
+        expect(String(passwordList).replace(/^\[(.+)\]$/,'$1')).toEqual("Password for" +
+            " all users:\nsecret_sauce")
     });
 })
 
@@ -32,7 +62,6 @@ xdescribe('Login Test', () => {
         await LoginPage.open();
         await LoginPage.login(`${CREDENTIALS.locked}`, `${CREDENTIALS.password}`);
         const errorMessage = await LoginPage.lockedMessage.getText()
-        console.log(errorMessage)
         expect(errorMessage).toEqual('Epic sadface: Sorry, this user has been locked out.')
     });
 
@@ -56,7 +85,7 @@ xdescribe('Login Test', () => {
     });
 });
 
-xdescribe("Negative Tests",  () => {
+xdescribe("Login Negative Tests",  () => {
     it('should not login with no credentials', async () => {
         await LoginPage.open();
         await LoginPage.login(``, ``);

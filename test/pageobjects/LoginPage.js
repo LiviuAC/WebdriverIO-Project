@@ -49,6 +49,23 @@ class LoginPage extends PageObject {
         return $('#page_wrapper > footer > img')
     }
 
+    get swaglabsLogo(){
+        return $('#root > div > div.login_logo')
+    }
+
+    get swaglabsMascot(){
+        return $('div.login_wrapper-inner > div.bot_column')
+    }
+
+    get usernamesText(){
+        return $('#login_credentials')
+    }
+
+    get passwordText(){
+        return $(' div.login_password')
+
+    }
+
     // get titlePage() {
     //     // browser.url(this.url)
     //     // const $title = browser.getTitle()
