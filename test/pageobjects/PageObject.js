@@ -20,6 +20,14 @@ class PageObject {
         return browser.getTitle();
     }
 
+    browserUrl() {
+        return browser.getUrl();
+    }
+
+    get appLogo(){
+        return browser.$("div[class='app_logo']");
+    }
+
     get btnBurgerMenu() {
         return browser.$("#react-burger-menu-btn");
     }
@@ -40,6 +48,13 @@ class PageObject {
         return browser.$("a[id='reset_sidebar_link']");
     }
 
+    get ShoppingCartIcon() {
+        return browser.$("a[class='shopping_cart_link']");
+    }
+
+    get ShoppingCartLabel() {
+        return browser.$("span[class='shopping_cart_badge']");
+    }
 
     /**
      * a method to encapsule automation code to interact with the page

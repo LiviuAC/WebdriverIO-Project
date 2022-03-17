@@ -1,9 +1,16 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const InventoryPage = require("../pageobjects/ProductsPage");
 const { CREDENTIALS } = require("../helper/credentials");
-const { ImageSource } = require("../helper/inventoryData");
+const { ImageSource, URLS} = require("../helper/inventoryData");
 
 describe("Login Page UI Tests", () => {
+    //TODO: sa discut un pic aceasta metoda si daca pot lua textul URL-ului asa cum a procedat Mihai in open
+    it(`should have the '${URLS.login}' url`, async () => {
+        await LoginPage.open();
+
+        expect(await LoginPage.browserUrl()).toEqual(URLS.login);
+    });
+
     it('should have the "Swag Labs" title', async () => {
         await LoginPage.open();
 

@@ -26,9 +26,7 @@ class ProductsPage extends PageObject {
         return browser.$("//button[@id='remove-sauce-labs-bike-light']"); //
     }
 
-    get ShoppingCartBadge() {
-        return browser.$("//span[@class='shopping_cart_badge']");
-    }
+
 
     get ProductsHeader() {
         return browser.$("//span[@class='title']");

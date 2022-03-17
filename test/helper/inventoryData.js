@@ -1,3 +1,8 @@
+exports.URLS = {
+    login: 'https://www.saucedemo.com/',
+    products: 'https://www.saucedemo.com/inventory.html'
+}
+
 exports.ImageSource = {
     backpack: '/static/media/sauce-backpack-1200x1500.34e7aa42.jpg',
     bikeLight: '/static/media/bike-light-1200x1500.a0c9caae.jpg',
