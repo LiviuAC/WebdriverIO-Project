@@ -2,35 +2,47 @@ const {PageObject} = require("./PageObject");
 
 class ProductsPage extends PageObject {
 
-    get btnAddBackpack () {
+    get url() {
+        return '/inventory'
+    }
+
+    open() {
+        return super.open(this.url);
+    }
+
+    get btnAddBackpack() {
         return browser.$("//button[@id='add-to-cart-sauce-labs-backpack']"); //
     }
 
-    get btnRemoveBackpack () {
+    get btnRemoveBackpack() {
         return browser.$("//button[@id='remove-sauce-labs-backpack']"); //
     }
 
-    get btnAddBikeLight () {
+    get btnAddBikeLight() {
         return browser.$("//button[@id='add-to-cart-sauce-labs-bike-light']"); //
     }
 
-    get ShoppingCartBadge () {
+    get btnRemoveBikeLight() {
+        return browser.$("//button[@id='remove-sauce-labs-bike-light']"); //
+    }
+
+    get ShoppingCartBadge() {
         return browser.$("//span[@class='shopping_cart_badge']");
     }
 
-    get ProductsHeader () {
+    get ProductsHeader() {
         return browser.$("//span[@class='title']");
     }
 
-    get allItemsImages () {
+    get allItemsImages() {
         return browser.$$("//img[@class='inventory_item_img']");
     }
 
-    get allItemsName (){
+    get allItemsName() {
         return browser.$$("//div[@class='inventory_item_name']");
     }
 
-    get allItemsPrices (){
+    get allItemsPrices() {
         return browser.$$('//div[@class="inventory_item_price"]');
     }
 
@@ -42,7 +54,7 @@ class ProductsPage extends PageObject {
     async productNames() {
         let productsNamesText = []
         const productNames = await this.allItemsName;
-        for (let i = 0; i < productNames.length; i++){
+        for (let i = 0; i < productNames.length; i++) {
             productsNamesText.push(await productNames[i].getText())
         }
         return productsNamesText
