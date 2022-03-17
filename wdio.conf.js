@@ -24,8 +24,18 @@ exports.config = {
     // will be called from there.
     //
     specs: [
-        './test/specs/**/*.js'
+        './test/specs/login.js',
+        './test/specs/products.js'
     ],
+
+    suites: {
+        login: [
+            './test/specs/login.js'
+        ],
+        products: [
+            './test/specs/products.js'
+        ]
+    },
     // Patterns to exclude.
     exclude: [
         // 'path/to/excluded/files'
@@ -100,7 +110,7 @@ exports.config = {
     baseUrl: 'https://www.saucedemo.com/',
     //
     // Default timeout for all waitFor* commands.
-    waitforTimeout: 10000,
+    waitforTimeout: 2000,
     //
     // Default timeout in milliseconds for request
     // if browser driver or grid doesn't send response

@@ -16,7 +16,7 @@ class PageObject {
         return browser.back()
     }
 
-    title () {
+    browserTitle () {
         return browser.getTitle()
     }
 }

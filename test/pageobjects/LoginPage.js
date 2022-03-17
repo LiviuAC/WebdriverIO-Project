@@ -4,7 +4,6 @@ const {PageObject} = require("./PageObject");
  * sub page containing specific selectors and methods for a specific page
  */
 class LoginPage extends PageObject {
-
     /**
      * define selectors using getter methods
      */
@@ -17,59 +16,51 @@ class LoginPage extends PageObject {
         return super.open(this.url);
     }
 
-    back() {
-        return super.back();
-    }
-
-    browserTitle() {
-        return super.title();
-    }
-
     get inputUsername () {
-        return $('#user-name');
+        return browser.$('#user-name');
     }
 
     get inputPassword () {
-        return $('#password');
+        return browser.$('#password');
     }
 
     get btnSubmit () {
-        return $('#login-button');
+        return browser.$('#login-button');
     }
 
     get lockedMessage(){
-        return $('div.error-message-container.error > h3')
+        return browser.$("h3[data-test='error']")
     }
 
-    get problemImage(){
-        return $('#item_4_img_link > img')
+    get imageLocation(){
+        return browser.$('#item_4_img_link > img')
     }
 
     get footerImage(){
-        return $('#page_wrapper > footer > img')
+        return browser.$('img[alt="Swag Bot Footer"]')
     }
 
     get swaglabsLogo(){
-        return $('#root > div > div.login_logo')
+        return browser.$('div.login_logo')
     }
 
     get swaglabsMascot(){
-        return $('div.login_wrapper-inner > div.bot_column')
+        return browser.$('div.bot_column')
     }
 
     get usernamesText(){
-        return $('#login_credentials')
+        return browser.$('#login_credentials')
     }
 
     get passwordText(){
-        return $(' div.login_password')
+        return browser.$('div.login_password')
 
     }
 
     // get titlePage() {
     //     // browser.url(this.url)
     //     // const $title = browser.getTitle()
-    //     return $('head > title')
+    //     return browser.$('head > title')
     // }
 
     /**
