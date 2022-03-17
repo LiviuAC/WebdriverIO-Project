@@ -1,8 +1,8 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const InventoryPage = require("../pageobjects/ProductsPage");
 const {CREDENTIALS} = require("../helper/credentials");
-const {ImageSource, ProductPrices} = require("../helper/dataModel");
-const {ProductNames} = require("../helper/dataModel");
+const {ImageSource, ProductPrices} = require("../helper/inventoryData");
+const {ProductNames} = require("../helper/inventoryData");
 
 describe('Login Test', () => {
     xit('the shopping cart label number should increase after adding a product', async () => {
