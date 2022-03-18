@@ -34,8 +34,12 @@ class ProductsPage extends PageObject {
         return browser.$("//span[@class='active_option']");
     }
 
-    get ProductsHeader() {
+    get productsHeader() {
         return browser.$("//span[@class='title']");
+    }
+
+    get robotPeek() {
+        return browser.$("//div[@class='peek']");
     }
 
     get allItemsImages() {
@@ -52,6 +56,30 @@ class ProductsPage extends PageObject {
 
     get allItemsDescriptions() {
         return browser.$$('//div[@class="inventory_item_desc"]');
+    }
+
+    get btnAddToCart() {
+        return browser.$$('//button[@class="btn btn_primary btn_small btn_inventory"]');
+    }
+
+    get twitterIcon() {
+        return browser.$('//a[@href="https://twitter.com/saucelabs"]');
+    }
+
+    get facebookIcon() {
+        return browser.$('//a[@href="https://www.facebook.com/saucelabs"]');
+    }
+
+    get linkedInIcon() {
+        return browser.$('//a[@href="https://www.linkedin.com/company/sauce-labs/"]');
+    }
+
+    get copyright() {
+        return browser.$('//div[@class="footer_copy"]');
+    }
+
+    get robotFooter() {
+        return browser.$('//img[@alt="Swag Bot Footer"]');
     }
 
     async addMultipleItems() {
@@ -82,7 +110,7 @@ class ProductsPage extends PageObject {
                     productsImagesSource.push(await productImage[i].getAttribute("src"));
                 }
                 return productsImagesSource
-            case 'details':
+            case 'descriptions':
                 let productsDetailsText = [];
                 const productDetail = await this.allItemsDescriptions;
                 for (let i = 0; i < productDetail.length; i++) {
@@ -91,6 +119,16 @@ class ProductsPage extends PageObject {
                 return productsDetailsText
         }
     }
+
+    async addToCartButtons() {
+        let addToCartButtons = [];
+        const addToCart = await this.btnAddToCart;
+        for (let i = 0; i < addToCart.length; i++) {
+            addToCartButtons.push(await addToCart[i].getText());
+        }
+        return addToCartButtons
+    }
 }
 
 module.exports = new ProductsPage();
+

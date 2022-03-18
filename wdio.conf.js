@@ -34,6 +34,9 @@ exports.config = {
         ],
         products: [
             './test/specs/products.js'
+        ],
+        productDetailed: [
+            './test/specs/productDetailed.js'
         ]
     },
     // Patterns to exclude.
