@@ -59,8 +59,8 @@ class ProductsPage extends PageObject {
         await this.btnAddBikeLight.click()
     }
 
-    async productData(productDetail) {
-        switch(productDetail){
+    async productData(data) {
+        switch(data){
             case 'names':
                 let productsNamesText = []
                 const productNames = await this.allItemsName;
