@@ -63,13 +63,9 @@ class PageObject {
 
     async logout() {
         await this.btnBurgerMenu.click();
+        await this.btnLogout.waitForClickable();
         await this.btnLogout.click();
     }
-
-    //TODO: sa adaug side menu elems si logout function
 }
 
-
 exports.PageObject = PageObject;
-// exports pt clase, export pt variabile (const, let)
-// npx wdio run ./wdio.conf.js pt a rula testele

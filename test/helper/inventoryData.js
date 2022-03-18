@@ -1,6 +1,8 @@
-exports.URLS = {
-    login: 'https://www.saucedemo.com/',
-    products: 'https://www.saucedemo.com/inventory.html'
+exports.filterOptions = {
+    nameAscending: 'Name (A to Z)',
+    nameDescending: 'Name (Z to A)',
+    priceAscending: 'Price (low to high)',
+    priceDescending: 'Price (high to low)'
 }
 
 exports.ImageSource = {

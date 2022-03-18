@@ -28,7 +28,7 @@ class LoginPage extends PageObject {
         return browser.$("#login-button");
     }
 
-    get lockedMessage() {
+    get errorMessage() {
         return browser.$("h3[data-test='error']");
     }
 
