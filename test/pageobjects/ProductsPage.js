@@ -85,7 +85,7 @@ class ProductsPage extends PageObject {
             case 'details':
                 let productsDetailsText = [];
                 const productDetail = await this.allItemsDescriptions;
-                for (let i = 0; i < productImage.length; i++) {
+                for (let i = 0; i < productDetail.length; i++) {
                     productsDetailsText.push(await productDetail[i].getText());
                 }
                 return productsDetailsText

@@ -20,10 +20,6 @@ class PageObject {
         return browser.getTitle();
     }
 
-    browserUrl() {
-        return browser.getUrl();
-    }
-
     get appLogo(){
         return browser.$("div[class='app_logo']");
     }

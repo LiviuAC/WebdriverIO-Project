@@ -2,7 +2,6 @@ const LoginPage = require("../pageobjects/LoginPage");
 const InventoryPage = require("../pageobjects/ProductsPage");
 const { CREDENTIALS } = require("../helper/credentials");
 const { ImageSource} = require("../helper/inventoryData");
-const ProductsPage = require("../pageobjects/ProductsPage");
 
 describe('Login Page Tests', () => {
 
