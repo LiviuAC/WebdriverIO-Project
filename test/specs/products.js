@@ -115,6 +115,17 @@ describe('Products Page Tests', () => {
             expect(productsPrices).toContain(ProductPrices.redShirt);
         });
 
+        xit("should display all the 6 products prices", async () => {
+            const productsPrices = await ProductsPage.productData('prices');
+
+            expect(productsPrices).toContain(ProductPrices.backpack);
+            expect(productsPrices).toContain(ProductPrices.bikeLight);
+            expect(productsPrices).toContain(ProductPrices.boltShirt);
+            expect(productsPrices).toContain(ProductPrices.fleeceJacket);
+            expect(productsPrices).toContain(ProductPrices.onesie);
+            expect(productsPrices).toContain(ProductPrices.redShirt);
+        });
+
         xit("should display all the 6 products prices sorted in ascending order", async () => {
             //#TODO: sa introduc metoda de a ordona in pagina si a lua valorile si sa corectez diferite nume de variabile
             let expectedProductPrices = [];
