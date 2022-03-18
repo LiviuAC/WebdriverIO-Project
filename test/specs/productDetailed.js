@@ -19,11 +19,10 @@ describe(" Product Detailed Page Tests", () => {
         });
 
         it("should display only the 'Sauce Labs Backpack' details upon clicking on its image", async () => {
-            const sauceLabsBackpackImage = await ProductsPage.allItemsImages[0]
-            sauceLabsBackpackImage.click()
-            console.log('backpage img:', sauceLabsBackpackImage)
-            expect(await ProductDetailedPage.detailsImage.isDisplayed()).toBe(false);
-            expect(await ProductDetailedPage.detailsImage.getAttribute('src')).toEqual(ImageSource.footerRobot);
+            await ProductsPage.allItemsImages[0].click()
+
+            expect(await ProductDetailedPage.detailsImage.isDisplayed()).toBe(true);
+            expect(await ProductDetailedPage.detailsImage.getAttribute('src')).toEqual(ImageSource.backpack);
         });
     })
 })

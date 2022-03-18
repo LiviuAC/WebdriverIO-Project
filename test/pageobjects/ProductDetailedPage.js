@@ -1,7 +1,6 @@
-const {ProductsPage} = require("./ProductsPage");
+const {PageObject} = require("./PageObject");
 
-class ProductDetailed extends ProductsPage {
-    //TODO: sa discut cu Mihai cum sa fac sa pot mosteni ProductsPage
+class ProductDetailed extends PageObject {
 
     get detailsImage() {
         return browser.$("//img[@class='inventory_details_img']");
