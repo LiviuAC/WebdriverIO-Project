@@ -1,8 +1,10 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const ProductsPage = require("../pageobjects/ProductsPage");
+const CartPage = require("../pageobjects/YourCartPage");
 const { CREDENTIALS } = require("../helper/credentials");
-const { ImageSource, ProductPrices, filterOptions, ProductDescriptions} = require("../helper/inventoryData");
+const { ImageSource, ProductPrices, filterOptions, ProductDescriptions, BurgerMenu} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
+const {titleContains} = require("wdio-wait-for");
 
 describe('Products Page Tests', () => {
 
@@ -27,7 +29,7 @@ describe('Products Page Tests', () => {
 
             expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true);
             expect(await ProductsPage.appLogo.isDisplayed()).toBe(true);
-            expect(await ProductsPage.ShoppingCartIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.shoppingCartIcon.isDisplayed()).toBe(true);
             expect(await ProductsPage.productsHeader.getText()).toEqual("PRODUCTS");
             expect(await ProductsPage.robotPeek.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterDropdownMenu.isDisplayed()).toBe(true);
@@ -93,15 +95,10 @@ describe('Products Page Tests', () => {
             expect(btnsAddToCart.length).toEqual(6)
         });
 
-        it("check Footer UI elements", async () => {
+        it("should not display the 'Remove' button", async () => {
 
-            expect(await ProductsPage.twitterIcon.isDisplayed()).toBe(true);
-            expect(await ProductsPage.facebookIcon.isDisplayed()).toBe(true);
-            expect(await ProductsPage.linkedInIcon.isDisplayed()).toBe(true);
-            expect(await ProductsPage.copyright.isDisplayed()).toBe(true);
-            expect(await ProductsPage.copyright.getText()).toContain("© 2022 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy");
-            expect(await ProductsPage.robotFooter.isDisplayed()).toBe(true);
-            expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
+            expect(await ProductsPage.btnRemoveBackpack.isDisplayed()).toBe(false);
+            expect(await ProductsPage.btnRemoveBikeLight.isDisplayed()).toBe(false);
         });
     })
 
@@ -126,30 +123,62 @@ describe('Products Page Tests', () => {
             await ProductsPage.logout();
         });
 
-
-
-        it("the shopping cart label number should increase after adding a product", async () => {
+        it("the user should be able to add to cart and remove the 'Sauce Labs Backpack' product",
+            async () => {
             await ProductsPage.btnAddBackpack.click();
 
-            expect(await ProductsPage.ShoppingCartLabel.getText()).toEqual("1");
+            expect(await ProductsPage.btnAddBackpack.isDisplayed()).toBe(false);
+            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
+
             await ProductsPage.btnRemoveBackpack.click();
+
+            expect(await ProductsPage.shoppingCartLabel.isDisplayed()).toBe(false);
         });
 
         it("the shopping cart label number should decrease after removing a product", async () => {
             await ProductsPage.addMultipleItems();
             await ProductsPage.btnRemoveBackpack.click();
 
-            expect(await ProductsPage.ShoppingCartLabel.getText()).toEqual("1");
+            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
             await ProductsPage.btnRemoveBikeLight.click();
         });
-
-        it("the shopping cart label should not be displayed upon removing the last item", async () => {
-            await ProductsPage.btnAddBackpack.click();
-            await ProductsPage.btnRemoveBackpack.click();
-
-            expect(await ProductsPage.ShoppingCartLabel.isDisplayed()).toBe(false);
-        });
     });
+
+    describe("Burger Menu Tests", () => {
+
+        it("check Burger Menu UI elements", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            const bmItemsText = await ProductsPage.burgerMenuItemsText()
+
+            expect(bmItemsText).toContain(BurgerMenu.allItems.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenu.about.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenu.logout.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenu.resetAppState.toUpperCase());
+
+            await ProductsPage.btnLogout.click();
+        })
+
+        it("the 'About' button should redirect to the 'https://saucelabs.com/' url", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.btnBurgerMenu.click();
+            await ProductsPage.btnAbout.waitForClickable();
+            await ProductsPage.btnAbout.click();
+
+            expect(await browser.getUrl()).toEqual("https://saucelabs.com/");
+        })
+
+        it("the 'Logout' button should redirect to the Login page", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.btnBurgerMenu.click();
+            await ProductsPage.btnLogout.waitForClickable();
+            await ProductsPage.btnLogout.click();
+
+            expect(await browser.getUrl()).toContain(LoginPage.url);
+        })
+    })
 
     xdescribe('Filter functionality Tests', () => {
 
@@ -197,5 +226,62 @@ describe('Products Page Tests', () => {
             // console.log('expected prices: ', dictValues)
         });
     })
-})
 
+    describe('Footer Tests', () => {
+
+        it("check Footer UI elements", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+
+            expect(await ProductsPage.twitterIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.facebookIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.linkedInIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.copyright.isDisplayed()).toBe(true);
+            expect(await ProductsPage.copyright.getText()).toContain("© 2022 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy");
+            expect(await ProductsPage.robotFooter.isDisplayed()).toBe(true);
+            expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
+
+            await ProductsPage.logout();
+        });
+
+        it("the 'Twitter' icon should redirect to the 'https://twitter.com/saucelabs' url", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.twitterIcon.waitForClickable()
+            await ProductsPage.twitterIcon.click()
+            await browser.switchWindow("https://twitter.com/saucelabs")
+
+            expect(await browser.getUrl()).toEqual("https://twitter.com/saucelabs");
+            await browser.closeWindow()
+            await browser.switchWindow('Swag Labs')
+        })
+
+        it("the 'Facebook' icon should redirect to the 'https://www.facebook.com/saucelabs' url",
+            async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.facebookIcon.waitForClickable()
+            await ProductsPage.facebookIcon.click()
+            await browser.switchWindow("https://www.facebook.com/saucelabs")
+
+            expect(await browser.getUrl()).toEqual("https://www.facebook.com/saucelabs");
+            await browser.closeWindow()
+            await browser.switchWindow('Swag Labs')
+        })
+
+
+        it("the 'LinkedIn' icon should redirect to the 'https://www.linkedin.com/company/sauce-labs/' url",
+            async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.linkedInIcon.waitForClickable()
+            await ProductsPage.linkedInIcon.click()
+            await browser.switchWindow("https://www.linkedin.com/company/sauce-labs/")
+
+
+            expect(await browser.getUrl()).toEqual("https://www.linkedin.com/company/sauce-labs/");
+            await browser.closeWindow()
+            await browser.switchWindow('Swag Labs')
+        })
+    })
+})

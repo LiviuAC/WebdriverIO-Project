@@ -11,19 +11,19 @@ class ProductsPage extends PageObject {
     }
 
     get btnAddBackpack() {
-        return browser.$("//button[@id='add-to-cart-sauce-labs-backpack']"); //
+        return browser.$("//button[@id='add-to-cart-sauce-labs-backpack']");
     }
 
     get btnRemoveBackpack() {
-        return browser.$("//button[@id='remove-sauce-labs-backpack']"); //
+        return browser.$("//button[@id='remove-sauce-labs-backpack']");
     }
 
     get btnAddBikeLight() {
-        return browser.$("//button[@id='add-to-cart-sauce-labs-bike-light']"); //
+        return browser.$("//button[@id='add-to-cart-sauce-labs-bike-light']");
     }
 
     get btnRemoveBikeLight() {
-        return browser.$("//button[@id='remove-sauce-labs-bike-light']"); //
+        return browser.$("//button[@id='remove-sauce-labs-bike-light']");
     }
 
     get filterDropdownMenu() {
@@ -60,26 +60,6 @@ class ProductsPage extends PageObject {
 
     get btnAddToCart() {
         return browser.$$('//button[@class="btn btn_primary btn_small btn_inventory"]');
-    }
-
-    get twitterIcon() {
-        return browser.$('//a[@href="https://twitter.com/saucelabs"]');
-    }
-
-    get facebookIcon() {
-        return browser.$('//a[@href="https://www.facebook.com/saucelabs"]');
-    }
-
-    get linkedInIcon() {
-        return browser.$('//a[@href="https://www.linkedin.com/company/sauce-labs/"]');
-    }
-
-    get copyright() {
-        return browser.$('//div[@class="footer_copy"]');
-    }
-
-    get robotFooter() {
-        return browser.$('//img[@alt="Swag Bot Footer"]');
     }
 
     async addMultipleItems() {
@@ -131,4 +111,3 @@ class ProductsPage extends PageObject {
 }
 
 module.exports = new ProductsPage();
-

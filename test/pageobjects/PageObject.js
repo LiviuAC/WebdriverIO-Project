@@ -28,6 +28,10 @@ class PageObject {
         return browser.$("#react-burger-menu-btn");
     }
 
+    get allBurgerMenuItems() {
+        return browser.$$("a[class='bm-item menu-item']");
+    }
+
     get btnAllItems() {
         return browser.$("a[id='inventory_sidebar_link']");
     }
@@ -44,11 +48,11 @@ class PageObject {
         return browser.$("a[id='reset_sidebar_link']");
     }
 
-    get ShoppingCartIcon() {
+    get shoppingCartIcon() {
         return browser.$("a[class='shopping_cart_link']");
     }
 
-    get ShoppingCartLabel() {
+    get shoppingCartLabel() {
         return browser.$("span[class='shopping_cart_badge']");
     }
 
@@ -81,6 +85,19 @@ class PageObject {
         await this.btnBurgerMenu.click();
         await this.btnLogout.waitForClickable();
         await this.btnLogout.click();
+    }
+
+    async burgerMenuItemsText() {
+        let bmItemsText = []
+
+        await this.btnBurgerMenu.click();
+        await this.btnResetAppState.waitForClickable();
+
+        const bmItem = await this.allBurgerMenuItems;
+        for (let i = 0; i < bmItem.length; i++) {
+            bmItemsText.push(await bmItem[i].getText())
+        }
+        return bmItemsText
     }
 }
 
