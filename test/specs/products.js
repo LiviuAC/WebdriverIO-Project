@@ -183,6 +183,18 @@ describe('Products Page Tests', () => {
             // let dictValues = Object.values(ProductPrices)
             // // expectedProductPrices.push(price)
             // console.log('expected prices: ', dictValues)
+
+            // let dictValues = Object.values(ProductPrices)
+            // // expectedProductPrices.push(price)
+            // console.log('expected prices: ', dictValues)
+
+            // let dictValues = Object.values(ProductPrices)
+            // // expectedProductPrices.push(price)
+            // console.log('expected prices: ', dictValues)
+
+            // let dictValues = Object.values(ProductPrices)
+            // // expectedProductPrices.push(price)
+            // console.log('expected prices: ', dictValues)
         });
     })
 })
