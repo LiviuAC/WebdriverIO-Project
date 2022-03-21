@@ -3,7 +3,6 @@ const ProductsPage = require("../pageobjects/ProductsPage");
 const { CREDENTIALS } = require("../helper/credentials");
 const { ImageSource, ProductPrices, filterOptions, ProductDescriptions} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
-const InventoryPage = require("../pageobjects/ProductsPage");
 
 describe('Products Page Tests', () => {
 
@@ -23,34 +22,14 @@ describe('Products Page Tests', () => {
             expect(await browser.getUrl()).toContain(ProductsPage.url);
         });
 
-        it('should have the "SWAGLABS" logo in primary header', async () => {
-
-            expect(await ProductsPage.appLogo.isDisplayed()).toBe(true);
-        });
-
-        it('should have the Burger Menu button in primary header', async () => {
-
-            expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true);
-        });
-
-        it('should have the Cart Icon in primary header', async () => {
-
-            expect(await ProductsPage.ShoppingCartIcon.isDisplayed()).toBe(true);
-        });
-
-        it("should have the 'PRODUCTS' text in secondary header", async () => {
-
-            expect(await InventoryPage.productsHeader.getText()).toEqual("PRODUCTS");
-        });
-
-        it('should have the Robot Peek in secondary header', async () => {
-
-            expect(await InventoryPage.robotPeek.isDisplayed()).toBe(true);
-        });
-
-        it('should have the filter dropdown menu in secondary header', async () => {
+        it('check Header UI elements', async () => {
             const filterOptionsText = await ProductsPage.filterDropdownMenu.getText()
 
+            expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true);
+            expect(await ProductsPage.appLogo.isDisplayed()).toBe(true);
+            expect(await ProductsPage.ShoppingCartIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.productsHeader.getText()).toEqual("PRODUCTS");
+            expect(await ProductsPage.robotPeek.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterDropdownMenu.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterActiveOption.getText()).toEqual(filterOptions.nameAscending.toUpperCase());
             expect(filterOptionsText).toContain(filterOptions.nameAscending)
@@ -58,7 +37,6 @@ describe('Products Page Tests', () => {
             expect(filterOptionsText).toContain(filterOptions.priceAscending)
             expect(filterOptionsText).toContain(filterOptions.priceDescending)
         });
-
 
         it("should display all the 6 products names", async () => {
             const productsNamesText = await ProductsPage.productData('names');
@@ -111,25 +89,17 @@ describe('Products Page Tests', () => {
         it("should display all the 6 'ADD TO CART' buttons", async () => {
             const btnsAddToCart = await ProductsPage.addToCartButtons();
 
-            expect(btnsAddToCart).toContain('ADD TO CART');
+            expect(btnsAddToCart.every( (val) => val === "ADD TO CART" )).toBe(true);
             expect(btnsAddToCart.length).toEqual(6)
         });
 
-        it("should display Twitter, Facebook and LinkedIn icons in footer", async () => {
+        it("check Footer UI elements", async () => {
 
             expect(await ProductsPage.twitterIcon.isDisplayed()).toBe(true);
             expect(await ProductsPage.facebookIcon.isDisplayed()).toBe(true);
             expect(await ProductsPage.linkedInIcon.isDisplayed()).toBe(true);
-        });
-
-        it("should display the privacy policy text in footer", async () => {
-
             expect(await ProductsPage.copyright.isDisplayed()).toBe(true);
             expect(await ProductsPage.copyright.getText()).toContain("© 2022 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy");
-        });
-
-        it("should display the Swag Bot in footer", async () => {
-
             expect(await ProductsPage.robotFooter.isDisplayed()).toBe(true);
             expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
         });
@@ -155,6 +125,8 @@ describe('Products Page Tests', () => {
         afterEach(async function () {
             await ProductsPage.logout();
         });
+
+
 
         it("the shopping cart label number should increase after adding a product", async () => {
             await ProductsPage.btnAddBackpack.click();

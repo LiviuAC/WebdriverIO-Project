@@ -6,6 +6,7 @@ const {ImageSource} = require("../helper/inventoryData");
 
 
 describe(" Product Detailed Page Tests", () => {
+    //TODO: sa continui cu aceast fisier pt backpack si restul itemelor dupa ce termin cu products
 
     describe("Access the 'Sauce Labs Backpack' details upon clicking on image", () => {
 

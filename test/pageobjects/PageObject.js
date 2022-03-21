@@ -52,6 +52,26 @@ class PageObject {
         return browser.$("span[class='shopping_cart_badge']");
     }
 
+    get twitterIcon() {
+        return browser.$('//a[@href="https://twitter.com/saucelabs"]');
+    }
+
+    get facebookIcon() {
+        return browser.$('//a[@href="https://www.facebook.com/saucelabs"]');
+    }
+
+    get linkedInIcon() {
+        return browser.$('//a[@href="https://www.linkedin.com/company/sauce-labs/"]');
+    }
+
+    get copyright() {
+        return browser.$('//div[@class="footer_copy"]');
+    }
+
+    get robotFooter() {
+        return browser.$('//img[@alt="Swag Bot Footer"]');
+    }
+
     /**
      * a method to encapsule automation code to interact with the page
      * e.g. to login using username and password
