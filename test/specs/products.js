@@ -1,7 +1,7 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const ProductsPage = require("../pageobjects/ProductsPage");
 const { CREDENTIALS } = require("../helper/credentials");
-const { ImageSource, ProductPrices, filterOptions} = require("../helper/inventoryData");
+const { ImageSource, ProductPrices, filterOptions, ProductDescriptions} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
 
 describe('Products Page Tests', () => {
@@ -22,24 +22,14 @@ describe('Products Page Tests', () => {
             expect(await browser.getUrl()).toContain(ProductsPage.url);
         });
 
-        it('should have the "SWAGLABS" logo in header', async () => {
-
-            expect(await ProductsPage.appLogo.isDisplayed()).toBe(true);
-        });
-
-        it('should have the Burger Menu button in header', async () => {
-
-            expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true);
-        });
-
-        it('should have the Cart Icon in header', async () => {
-
-            expect(await ProductsPage.ShoppingCartIcon.isDisplayed()).toBe(true);
-        });
-
-        it('should have the filter dropdown menu in header', async () => {
+        it('check Header UI elements', async () => {
             const filterOptionsText = await ProductsPage.filterDropdownMenu.getText()
 
+            expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true);
+            expect(await ProductsPage.appLogo.isDisplayed()).toBe(true);
+            expect(await ProductsPage.ShoppingCartIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.productsHeader.getText()).toEqual("PRODUCTS");
+            expect(await ProductsPage.robotPeek.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterDropdownMenu.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterActiveOption.getText()).toEqual(filterOptions.nameAscending.toUpperCase());
             expect(filterOptionsText).toContain(filterOptions.nameAscending)
@@ -47,6 +37,82 @@ describe('Products Page Tests', () => {
             expect(filterOptionsText).toContain(filterOptions.priceAscending)
             expect(filterOptionsText).toContain(filterOptions.priceDescending)
         });
+
+        it("should display all the 6 products names", async () => {
+            const productsNamesText = await ProductsPage.productData('names');
+
+            expect(productsNamesText).toContain(ProductNames.backpack);
+            expect(productsNamesText).toContain(ProductNames.bikeLight);
+            expect(productsNamesText).toContain(ProductNames.boltShirt);
+            expect(productsNamesText).toContain(ProductNames.fleeceJacket);
+            expect(productsNamesText).toContain(ProductNames.onesie);
+            expect(productsNamesText).toContain(ProductNames.redShirt);
+            expect(productsNamesText.length).toEqual(6)
+        });
+
+        it("should display all the 6 products images", async () => {
+            const productsImagesSource = await ProductsPage.productData('images');
+
+            expect(productsImagesSource).toContain(ImageSource.backpack);
+            expect(productsImagesSource).toContain(ImageSource.bikeLight);
+            expect(productsImagesSource).toContain(ImageSource.boltShirt);
+            expect(productsImagesSource).toContain(ImageSource.fleeceJacket);
+            expect(productsImagesSource).toContain(ImageSource.onesie);
+            expect(productsImagesSource).toContain(ImageSource.redShirt);
+            expect(productsImagesSource.length).toEqual(6)
+        });
+
+        it("should display all the 6 products prices", async () => {
+            const productsPricesText = await ProductsPage.productData('prices');
+
+            expect(productsPricesText).toContain(ProductPrices.backpack);
+            expect(productsPricesText).toContain(ProductPrices.bikeLight);
+            expect(productsPricesText).toContain(ProductPrices.boltShirt);
+            expect(productsPricesText).toContain(ProductPrices.fleeceJacket);
+            expect(productsPricesText).toContain(ProductPrices.onesie);
+            expect(productsPricesText).toContain(ProductPrices.redShirt);
+            expect(productsPricesText.length).toEqual(6)
+        });
+
+        it("should display all the 6 products descriptions", async () => {
+            const productsDescriptionsText = await ProductsPage.productData('descriptions');
+
+            expect(productsDescriptionsText).toContain(ProductDescriptions.backpack);
+            expect(productsDescriptionsText).toContain(ProductDescriptions.bikeLight);
+            expect(productsDescriptionsText).toContain(ProductDescriptions.boltShirt);
+            expect(productsDescriptionsText).toContain(ProductDescriptions.fleeceJacket);
+            expect(productsDescriptionsText).toContain(ProductDescriptions.onesie);
+            expect(productsDescriptionsText).toContain(ProductDescriptions.redShirt);
+            expect(productsDescriptionsText.length).toEqual(6)
+        });
+
+        it("should display all the 6 'ADD TO CART' buttons", async () => {
+            const btnsAddToCart = await ProductsPage.addToCartButtons();
+
+            expect(btnsAddToCart.every( (val) => val === "ADD TO CART" )).toBe(true);
+            expect(btnsAddToCart.length).toEqual(6)
+        });
+
+        it("check Footer UI elements", async () => {
+
+            expect(await ProductsPage.twitterIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.facebookIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.linkedInIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.copyright.isDisplayed()).toBe(true);
+            expect(await ProductsPage.copyright.getText()).toContain("© 2022 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy");
+            expect(await ProductsPage.robotFooter.isDisplayed()).toBe(true);
+            expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
+        });
+    })
+
+    describe("Access the Products page directly without login Test", () => {
+        it(`should not be able to access the page directly without login`, async () => {
+            await ProductsPage.open();
+
+            expect(await LoginPage.errorMessage.getText()).toEqual(
+                "Epic sadface: You can only access '/inventory.html' when you are logged in."
+            );
+        })
     })
 
     describe("Products Test", () => {
@@ -59,6 +125,8 @@ describe('Products Page Tests', () => {
         afterEach(async function () {
             await ProductsPage.logout();
         });
+
+
 
         it("the shopping cart label number should increase after adding a product", async () => {
             await ProductsPage.btnAddBackpack.click();
@@ -81,41 +149,20 @@ describe('Products Page Tests', () => {
 
             expect(await ProductsPage.ShoppingCartLabel.isDisplayed()).toBe(false);
         });
+    });
 
-        it("should display all the 6 products names", async () => {
-            const productsNamesText = await ProductsPage.productData('names');
+    xdescribe('Filter functionality Tests', () => {
 
-            expect(productsNamesText).toContain(ProductNames.backpack);
-            expect(productsNamesText).toContain(ProductNames.bikeLight);
-            expect(productsNamesText).toContain(ProductNames.boltShirt);
-            expect(productsNamesText).toContain(ProductNames.fleeceJacket);
-            expect(productsNamesText).toContain(ProductNames.onesie);
-            expect(productsNamesText).toContain(ProductNames.redShirt);
+        beforeEach(async function () {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
         });
 
-        it("should display all the 6 products images", async () => {
-            const productsImagesSource = await ProductsPage.productData('images');
-
-            expect(productsImagesSource).toContain(ImageSource.backpack);
-            expect(productsImagesSource).toContain(ImageSource.bikeLight);
-            expect(productsImagesSource).toContain(ImageSource.boltShirt);
-            expect(productsImagesSource).toContain(ImageSource.fleeceJacket);
-            expect(productsImagesSource).toContain(ImageSource.onesie);
-            expect(productsImagesSource).toContain(ImageSource.redShirt);
+        afterEach(async function () {
+            await ProductsPage.logout();
         });
 
-        it("should display all the 6 products prices", async () => {
-            const productsPrices = await ProductsPage.productData('prices');
-
-            expect(productsPrices).toContain(ProductPrices.backpack);
-            expect(productsPrices).toContain(ProductPrices.bikeLight);
-            expect(productsPrices).toContain(ProductPrices.boltShirt);
-            expect(productsPrices).toContain(ProductPrices.fleeceJacket);
-            expect(productsPrices).toContain(ProductPrices.onesie);
-            expect(productsPrices).toContain(ProductPrices.redShirt);
-        });
-
-        xit("should display all the 6 products prices sorted in ascending order", async () => {
+        it("should display all the 6 products prices sorted in ascending order", async () => {
             //#TODO: sa introduc metoda de a ordona in pagina si a lua valorile si sa corectez diferite nume de variabile
             let expectedProductPrices = [];
             let productsPrices = [];
@@ -136,18 +183,19 @@ describe('Products Page Tests', () => {
             // let dictValues = Object.values(ProductPrices)
             // // expectedProductPrices.push(price)
             // console.log('expected prices: ', dictValues)
+
+            // let dictValues = Object.values(ProductPrices)
+            // // expectedProductPrices.push(price)
+            // console.log('expected prices: ', dictValues)
+
+            // let dictValues = Object.values(ProductPrices)
+            // // expectedProductPrices.push(price)
+            // console.log('expected prices: ', dictValues)
+
+            // let dictValues = Object.values(ProductPrices)
+            // // expectedProductPrices.push(price)
+            // console.log('expected prices: ', dictValues)
         });
-    });
-
-    describe("Access the Products page without loging in Test", () => {
-        it(`should not be able to access the page directly without login`, async () => {
-            await ProductsPage.open();
-
-            expect(await LoginPage.errorMessage.getText()).toEqual(
-                "Epic sadface: You can only access '/inventory.html' when you are logged in."
-            );
-        })
     })
 })
-
 

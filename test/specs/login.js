@@ -56,7 +56,7 @@ describe('Login Page Tests', () => {
             await LoginPage.open();
             await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
 
-            expect(await InventoryPage.ProductsHeader.getText()).toEqual("PRODUCTS");
+            expect(await InventoryPage.productsHeader.isDisplayed()).toBe(true);
         });
 
         it("should not login with locked credentials", async () => {

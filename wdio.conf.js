@@ -33,7 +33,11 @@ exports.config = {
             './test/specs/login.js'
         ],
         products: [
-            './test/specs/products.js'
+            './test/specs/products.js',
+            // './test/specs/productDetails.js'
+        ],
+        productDetails: [
+            './test/specs/productDetails.js'
         ]
     },
     // Patterns to exclude.
