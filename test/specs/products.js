@@ -2,7 +2,7 @@ const LoginPage = require("../pageobjects/LoginPage");
 const ProductsPage = require("../pageobjects/ProductsPage");
 const CartPage = require("../pageobjects/YourCartPage");
 const { CREDENTIALS } = require("../helper/credentials");
-const { ImageSource, ProductPrices, filterOptions, ProductDescriptions, BurgerMenuText} = require("../helper/inventoryData");
+const { ImageSource, filterOptions, ProductDescriptions, BurgerMenuText} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
 const {titleContains} = require("wdio-wait-for");
 
@@ -62,18 +62,6 @@ describe('Products Page Tests', () => {
             expect(productsImagesSource).toContain(ImageSource.onesie);
             expect(productsImagesSource).toContain(ImageSource.redShirt);
             expect(productsImagesSource.length).toEqual(6)
-        });
-
-        it("should display all the 6 products prices", async () => {
-            const productsPricesText = await ProductsPage.productData('prices');
-
-            expect(productsPricesText).toContain(ProductPrices.backpack);
-            expect(productsPricesText).toContain(ProductPrices.bikeLight);
-            expect(productsPricesText).toContain(ProductPrices.boltShirt);
-            expect(productsPricesText).toContain(ProductPrices.fleeceJacket);
-            expect(productsPricesText).toContain(ProductPrices.onesie);
-            expect(productsPricesText).toContain(ProductPrices.redShirt);
-            expect(productsPricesText.length).toEqual(6)
         });
 
         it("should display all the 6 products descriptions", async () => {
@@ -209,23 +197,22 @@ describe('Products Page Tests', () => {
         });
 
         it("should display all the 6 products prices sorted in descending order", async () => {
+            let ProductsPrices = await ProductsPage.productData('prices');
             await ProductsPage.filterData('priceDescending')
-            let descendingExpectedProductsPrices = await ProductsPage.productsPricesNumberArray('expectedPrices');
-            let descendingProductsPrices = await ProductsPage.productsPricesNumberArray('pagePrices');
+            let ProductsPricesDescendingOrder = await ProductsPage.productData('prices');
+            ProductsPrices.sort((a, b) => b - a);
 
-            descendingExpectedProductsPrices.sort((a, b) => b - a);
-
-            expect(descendingProductsPrices).toEqual(descendingExpectedProductsPrices);
+            expect(ProductsPrices).toEqual(ProductsPricesDescendingOrder);
         });
 
         it("should display all the 6 products prices sorted in ascending order", async () => {
+            let ProductsPrices = await ProductsPage.productData('prices');
             await ProductsPage.filterData('priceAscending')
-            let ascendingExpectedProductsPrices = await ProductsPage.productsPricesNumberArray('expectedPrices');
-            let ascendingProductsPrices = await ProductsPage.productsPricesNumberArray('pagePrices');
+            let ProductsPricesAscendingOrder = await ProductsPage.productData('prices');
 
-            ascendingExpectedProductsPrices.sort((a, b) => a - b);
+            ProductsPrices.sort((a, b) => a - b);
 
-            expect(ascendingProductsPrices).toEqual(ascendingExpectedProductsPrices);
+            expect(ProductsPrices).toEqual(ProductsPricesAscendingOrder);
         });
     })
 

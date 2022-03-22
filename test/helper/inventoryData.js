@@ -24,15 +24,6 @@ exports.ProductNames = {
     redShirt: 'Test.allTheThings() T-Shirt (Red)'
 }
 
-exports.ProductPrices = {
-    backpack: '$29.99',
-    bikeLight: '$9.99',
-    boltShirt: '$15.99',
-    fleeceJacket: '$49.99',
-    onesie: '$7.99',
-    redShirt: '$15.99'
-}
-
 exports.ProductDescriptions = {
     backpack: "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style " +
         "with unequaled laptop and tablet protection.",

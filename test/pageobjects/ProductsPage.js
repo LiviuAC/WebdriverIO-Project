@@ -68,7 +68,7 @@ class ProductsPage extends PageObject {
     }
 
     get allItemsPrices() {
-        return browser.$$('//div[@class="inventory_item_price"]');
+        return browser.$$("//div[@class = 'inventory_item_price']");
     }
 
     get allItemsDescriptions() {
@@ -96,8 +96,10 @@ class ProductsPage extends PageObject {
             case 'prices':
                 let productsPrices = [];
                 const productPrice = await this.allItemsPrices;
+                let numberPrice
                 for (let i = 0; i < productPrice.length; i++) {
-                    productsPrices.push(await productPrice[i].getText());
+                    numberPrice = await productPrice[i].getText() //am incercat sa folosesc direct sintaxa aceasta cu un rand mai jos si nu a mers decat astfel
+                    productsPrices.push(numberPrice.replace("$", ""));
                 }
                 return productsPrices
             case 'images':
@@ -114,26 +116,6 @@ class ProductsPage extends PageObject {
                     productsDetailsText.push(await productDetail[i].getText());
                 }
                 return productsDetailsText
-        }
-    }
-
-    async productsPricesNumberArray(value) {
-        switch(value){
-            case 'pagePrices':
-                let productsPrices = [];
-                const productPrice = await this.productData('prices');
-
-                for (let i = 0; i < productPrice.length; i++) {
-                    productsPrices.push(Number(productPrice[i].replace("$", "")));
-                }
-                return productsPrices
-            case 'expectedPrices':
-                let expectedProductsPrices = []
-                const dictValues = Object.values(ProductPrices)
-                for (let i = 0; i < dictValues.length; i++) {
-                    expectedProductsPrices.push(Number(dictValues[i].replace("$", "")));
-                }
-                return expectedProductsPrices
         }
     }
 
