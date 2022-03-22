@@ -197,7 +197,6 @@ describe('Products Page Tests', () => {
             const descendingExpectedProductsNames = Object.values(ProductNames)
 
             expect(descendingProductsNames).toEqual(descendingExpectedProductsNames.reverse());
-            await ProductsPage.filterData('nameAscending')
         });
 
         it("should display all the 6 products names sorted in ascending order", async () => {
@@ -210,43 +209,23 @@ describe('Products Page Tests', () => {
         });
 
         it("should display all the 6 products prices sorted in descending order", async () => {
-            let descendingExpectedProductsPrices = [];
-            let descendingProductsPrices = [];
             await ProductsPage.filterData('priceDescending')
-            const productPrice = await ProductsPage.productData('prices');
-            const dictValues = Object.values(ProductPrices)
+            let descendingExpectedProductsPrices = await ProductsPage.productsPricesNumberArray('expectedPrices');
+            let descendingProductsPrices = await ProductsPage.productsPricesNumberArray('pagePrices');
 
-            for (let i = 0; i < productPrice.length; i++) {
-                descendingProductsPrices.push(Number(productPrice[i].replace("$", "")));
-            }
-
-            for (let i = 0; i < dictValues.length; i++) {
-                descendingExpectedProductsPrices.push(Number(dictValues[i].replace("$", "")));
-            }
             descendingExpectedProductsPrices.sort((a, b) => b - a);
 
             expect(descendingProductsPrices).toEqual(descendingExpectedProductsPrices);
-            await ProductsPage.filterData('nameAscending')
         });
 
         it("should display all the 6 products prices sorted in ascending order", async () => {
-            let ascendingExpectedProductsPrices = [];
-            let ascendingProductsPrices = [];
             await ProductsPage.filterData('priceAscending')
-            const productPrice = await ProductsPage.productData('prices');
-            const dictValues = Object.values(ProductPrices)
+            let ascendingExpectedProductsPrices = await ProductsPage.productsPricesNumberArray('expectedPrices');
+            let ascendingProductsPrices = await ProductsPage.productsPricesNumberArray('pagePrices');
 
-            for (let i = 0; i < productPrice.length; i++) {
-                ascendingProductsPrices.push(Number(productPrice[i].replace("$", "")));
-            }
-
-            for (let i = 0; i < dictValues.length; i++) {
-                ascendingExpectedProductsPrices.push(Number(dictValues[i].replace("$", "")));
-            }
             ascendingExpectedProductsPrices.sort((a, b) => a - b);
 
             expect(ascendingProductsPrices).toEqual(ascendingExpectedProductsPrices);
-            await ProductsPage.filterData('nameAscending')
         });
     })
 
@@ -272,7 +251,7 @@ describe('Products Page Tests', () => {
             expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
         });
 
-        it("the 'Twitter' icon should redirect to the 'https://twitter.com/saucelabs' url", async () => {
+        it("the 'Twitter' icon should redirect to the Sauce Labs Twitter url", async () => {
             await ProductsPage.twitterIcon.waitForClickable()
             await ProductsPage.twitterIcon.click()
             await browser.switchWindow("https://twitter.com/saucelabs")
@@ -281,8 +260,7 @@ describe('Products Page Tests', () => {
             await ProductsPage.closeWindowAndSwitchBack()
         })
 
-        it("the 'Facebook' icon should redirect to the 'https://www.facebook.com/saucelabs' url",
-            async () => {
+        it("the 'Facebook' icon should redirect to the Sauce Labs Facebook url", async () => {
             await ProductsPage.facebookIcon.waitForClickable()
             await ProductsPage.facebookIcon.click()
             await browser.switchWindow("https://www.facebook.com/saucelabs")
@@ -291,8 +269,7 @@ describe('Products Page Tests', () => {
             await ProductsPage.closeWindowAndSwitchBack()
         })
 
-        it("the 'LinkedIn' icon should redirect to the 'https://www.linkedin.com/company/sauce-labs/' url",
-            async () => {
+        it("the 'LinkedIn' icon should redirect to the Sauce Labs LinkedIn url", async () => {
             await ProductsPage.linkedInIcon.waitForClickable()
             await ProductsPage.linkedInIcon.click()
             await browser.switchWindow("https://www.linkedin.com/company/sauce-labs/")

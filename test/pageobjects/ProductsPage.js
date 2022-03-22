@@ -1,4 +1,5 @@
 const {PageObject} = require("./PageObject");
+const {ProductPrices} = require("../helper/inventoryData");
 
 class ProductsPage extends PageObject {
 
@@ -113,6 +114,26 @@ class ProductsPage extends PageObject {
                     productsDetailsText.push(await productDetail[i].getText());
                 }
                 return productsDetailsText
+        }
+    }
+
+    async productsPricesNumberArray(value) {
+        switch(value){
+            case 'pagePrices':
+                let productsPrices = [];
+                const productPrice = await this.productData('prices');
+
+                for (let i = 0; i < productPrice.length; i++) {
+                    productsPrices.push(Number(productPrice[i].replace("$", "")));
+                }
+                return productsPrices
+            case 'expectedPrices':
+                let expectedProductsPrices = []
+                const dictValues = Object.values(ProductPrices)
+                for (let i = 0; i < dictValues.length; i++) {
+                    expectedProductsPrices.push(Number(dictValues[i].replace("$", "")));
+                }
+                return expectedProductsPrices
         }
     }
 
