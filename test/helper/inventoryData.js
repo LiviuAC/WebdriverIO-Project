@@ -24,15 +24,6 @@ exports.ProductNames = {
     redShirt: 'Test.allTheThings() T-Shirt (Red)'
 }
 
-exports.ProductPrices = {
-    backpack: '$29.99',
-    bikeLight: '$9.99',
-    boltShirt: '$15.99',
-    fleeceJacket: '$49.99',
-    onesie: '$7.99',
-    redShirt: '$15.99'
-}
-
 exports.ProductDescriptions = {
     backpack: "carry.allTheThings() with the sleek, streamlined Sly Pack that melds uncompromising style " +
         "with unequaled laptop and tablet protection.",
@@ -46,4 +37,11 @@ exports.ProductDescriptions = {
         "Reinforced 3-snap bottom closure, two-needle hemmed sleeved and bottom won't unravel.",
     redShirt: "This classic Sauce Labs t-shirt is perfect to wear when cozying up to your keyboard " +
         "to automate a few tests. Super-soft and comfy ringspun combed cotton."
+}
+
+exports.BurgerMenuText = {
+    allItems: 'All Items',
+    about:'About',
+    logout: 'Logout',
+    resetAppState: 'Reset App State'
 }

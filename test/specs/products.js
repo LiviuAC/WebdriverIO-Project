@@ -1,8 +1,10 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const ProductsPage = require("../pageobjects/ProductsPage");
+const CartPage = require("../pageobjects/YourCartPage");
 const { CREDENTIALS } = require("../helper/credentials");
-const { ImageSource, ProductPrices, filterOptions, ProductDescriptions} = require("../helper/inventoryData");
+const { ImageSource, filterOptions, ProductDescriptions, BurgerMenuText} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
+const {titleContains} = require("wdio-wait-for");
 
 describe('Products Page Tests', () => {
 
@@ -27,7 +29,7 @@ describe('Products Page Tests', () => {
 
             expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true);
             expect(await ProductsPage.appLogo.isDisplayed()).toBe(true);
-            expect(await ProductsPage.ShoppingCartIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.shoppingCartIcon.isDisplayed()).toBe(true);
             expect(await ProductsPage.productsHeader.getText()).toEqual("PRODUCTS");
             expect(await ProductsPage.robotPeek.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterDropdownMenu.isDisplayed()).toBe(true);
@@ -62,18 +64,6 @@ describe('Products Page Tests', () => {
             expect(productsImagesSource.length).toEqual(6)
         });
 
-        it("should display all the 6 products prices", async () => {
-            const productsPricesText = await ProductsPage.productData('prices');
-
-            expect(productsPricesText).toContain(ProductPrices.backpack);
-            expect(productsPricesText).toContain(ProductPrices.bikeLight);
-            expect(productsPricesText).toContain(ProductPrices.boltShirt);
-            expect(productsPricesText).toContain(ProductPrices.fleeceJacket);
-            expect(productsPricesText).toContain(ProductPrices.onesie);
-            expect(productsPricesText).toContain(ProductPrices.redShirt);
-            expect(productsPricesText.length).toEqual(6)
-        });
-
         it("should display all the 6 products descriptions", async () => {
             const productsDescriptionsText = await ProductsPage.productData('descriptions');
 
@@ -93,15 +83,10 @@ describe('Products Page Tests', () => {
             expect(btnsAddToCart.length).toEqual(6)
         });
 
-        it("check Footer UI elements", async () => {
+        it("should not display the 'Remove' button", async () => {
 
-            expect(await ProductsPage.twitterIcon.isDisplayed()).toBe(true);
-            expect(await ProductsPage.facebookIcon.isDisplayed()).toBe(true);
-            expect(await ProductsPage.linkedInIcon.isDisplayed()).toBe(true);
-            expect(await ProductsPage.copyright.isDisplayed()).toBe(true);
-            expect(await ProductsPage.copyright.getText()).toContain("© 2022 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy");
-            expect(await ProductsPage.robotFooter.isDisplayed()).toBe(true);
-            expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
+            expect(await ProductsPage.btnRemoveBackpack.isDisplayed()).toBe(false);
+            expect(await ProductsPage.btnRemoveBikeLight.isDisplayed()).toBe(false);
         });
     })
 
@@ -126,32 +111,64 @@ describe('Products Page Tests', () => {
             await ProductsPage.logout();
         });
 
-
-
-        it("the shopping cart label number should increase after adding a product", async () => {
+        it("the user should be able to add to cart and remove the 'Sauce Labs Backpack' product",
+            async () => {
             await ProductsPage.btnAddBackpack.click();
 
-            expect(await ProductsPage.ShoppingCartLabel.getText()).toEqual("1");
+            expect(await ProductsPage.btnAddBackpack.isDisplayed()).toBe(false);
+            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
+
             await ProductsPage.btnRemoveBackpack.click();
+
+            expect(await ProductsPage.shoppingCartLabel.isDisplayed()).toBe(false);
         });
 
         it("the shopping cart label number should decrease after removing a product", async () => {
             await ProductsPage.addMultipleItems();
             await ProductsPage.btnRemoveBackpack.click();
 
-            expect(await ProductsPage.ShoppingCartLabel.getText()).toEqual("1");
+            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
             await ProductsPage.btnRemoveBikeLight.click();
-        });
-
-        it("the shopping cart label should not be displayed upon removing the last item", async () => {
-            await ProductsPage.btnAddBackpack.click();
-            await ProductsPage.btnRemoveBackpack.click();
-
-            expect(await ProductsPage.ShoppingCartLabel.isDisplayed()).toBe(false);
         });
     });
 
-    xdescribe('Filter functionality Tests', () => {
+    describe("Burger Menu Tests", () => {
+
+        it("check Burger Menu UI elements", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            const bmItemsText = await ProductsPage.burgerMenuItemsText()
+
+            expect(bmItemsText).toContain(BurgerMenuText.allItems.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenuText.about.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenuText.logout.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenuText.resetAppState.toUpperCase());
+
+            await ProductsPage.btnLogout.click();
+        })
+
+        it("the 'About' button should redirect to the 'https://saucelabs.com/' url", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.btnBurgerMenu.click();
+            await ProductsPage.btnAbout.waitForClickable();
+            await ProductsPage.btnAbout.click();
+
+            expect(await browser.getUrl()).toEqual("https://saucelabs.com/");
+        })
+
+        it("the 'Logout' button should redirect to the Login page", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.btnBurgerMenu.click();
+            await ProductsPage.btnLogout.waitForClickable();
+            await ProductsPage.btnLogout.click();
+
+            expect(await browser.getUrl()).toContain(LoginPage.url);
+        })
+    })
+
+    describe('Filter functionality Tests', () => {
 
         beforeEach(async function () {
             await LoginPage.open();
@@ -162,40 +179,90 @@ describe('Products Page Tests', () => {
             await ProductsPage.logout();
         });
 
+        it("should display all the 6 products names sorted in descending order", async () => {
+            await ProductsPage.filterData('nameDescending')
+            const descendingProductsNames = await ProductsPage.productData('names');
+            const descendingExpectedProductsNames = Object.values(ProductNames)
+
+            expect(descendingProductsNames).toEqual(descendingExpectedProductsNames.reverse());
+        });
+
+        it("should display all the 6 products names sorted in ascending order", async () => {
+            await ProductsPage.filterData('nameDescending')
+            await ProductsPage.filterData('nameAscending')
+            const ascendingProductsNames = await ProductsPage.productData('names');
+            const ascendingExpectedProductsNames = Object.values(ProductNames)
+
+            expect(ascendingProductsNames).toEqual(ascendingExpectedProductsNames);
+        });
+
+        it("should display all the 6 products prices sorted in descending order", async () => {
+            let ProductsPrices = await ProductsPage.productData('prices');
+            await ProductsPage.filterData('priceDescending')
+            let ProductsPricesDescendingOrder = await ProductsPage.productData('prices');
+            ProductsPrices.sort((a, b) => b - a);
+
+            expect(ProductsPrices).toEqual(ProductsPricesDescendingOrder);
+        });
+
         it("should display all the 6 products prices sorted in ascending order", async () => {
-            //#TODO: sa introduc metoda de a ordona in pagina si a lua valorile si sa corectez diferite nume de variabile
-            let expectedProductPrices = [];
-            let productsPrices = [];
+            let ProductsPrices = await ProductsPage.productData('prices');
+            await ProductsPage.filterData('priceAscending')
+            let ProductsPricesAscendingOrder = await ProductsPage.productData('prices');
 
-            const productPrice = await ProductsPage.allItemsPrices;
-            for (let i = 0; i < productPrice.length; i++) {
-                productsPrices.push(await productPrice[i].getText());
-            }
+            ProductsPrices.sort((a, b) => a - b);
 
-            let sortedProductsPrices = [];
-            for (let i = 0; i < productsPrices.length; i++) {
-                sortedProductsPrices.push(Number(productsPrices[i].replace("$", "")));
-                // console.log("type of: ", typeof Number(productsPrices[i].replace('$','')))
-            }
-            sortedProductsPrices.sort((a, b) => a - b);
-            console.log("sorted prices: ", sortedProductsPrices);
-
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
-
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
-
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
-
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
+            expect(ProductsPrices).toEqual(ProductsPricesAscendingOrder);
         });
     })
-})
 
+    describe('Footer Tests', () => {
+
+        beforeEach(async function () {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+        });
+
+        afterEach(async function () {
+            await ProductsPage.logout();
+        });
+
+        it("check Footer UI elements", async () => {
+
+            expect(await ProductsPage.twitterIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.facebookIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.linkedInIcon.isDisplayed()).toBe(true);
+            expect(await ProductsPage.copyright.isDisplayed()).toBe(true);
+            expect(await ProductsPage.copyright.getText()).toContain("© 2022 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy");
+            expect(await ProductsPage.robotFooter.isDisplayed()).toBe(true);
+            expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
+        });
+
+        it("the 'Twitter' icon should redirect to the Sauce Labs Twitter url", async () => {
+            await ProductsPage.twitterIcon.waitForClickable()
+            await ProductsPage.twitterIcon.click()
+            await browser.switchWindow("https://twitter.com/saucelabs")
+
+            expect(await browser.getUrl()).toEqual("https://twitter.com/saucelabs");
+            await ProductsPage.closeWindowAndSwitchBack()
+        })
+
+        it("the 'Facebook' icon should redirect to the Sauce Labs Facebook url", async () => {
+            await ProductsPage.facebookIcon.waitForClickable()
+            await ProductsPage.facebookIcon.click()
+            await browser.switchWindow("https://www.facebook.com/saucelabs")
+
+            expect(await browser.getUrl()).toEqual("https://www.facebook.com/saucelabs");
+            await ProductsPage.closeWindowAndSwitchBack()
+        })
+
+        it("the 'LinkedIn' icon should redirect to the Sauce Labs LinkedIn url", async () => {
+            await ProductsPage.linkedInIcon.waitForClickable()
+            await ProductsPage.linkedInIcon.click()
+            await browser.switchWindow("https://www.linkedin.com/company/sauce-labs/")
+
+            expect(await browser.getUrl()).toEqual("https://www.linkedin.com/company/sauce-labs/");
+            await ProductsPage.closeWindowAndSwitchBack()
+        })
+    })
+})

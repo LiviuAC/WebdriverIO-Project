@@ -1,4 +1,5 @@
 const {PageObject} = require("./PageObject");
+const {ProductPrices} = require("../helper/inventoryData");
 
 class ProductsPage extends PageObject {
 
@@ -11,19 +12,19 @@ class ProductsPage extends PageObject {
     }
 
     get btnAddBackpack() {
-        return browser.$("//button[@id='add-to-cart-sauce-labs-backpack']"); //
+        return browser.$("//button[@id='add-to-cart-sauce-labs-backpack']");
     }
 
     get btnRemoveBackpack() {
-        return browser.$("//button[@id='remove-sauce-labs-backpack']"); //
+        return browser.$("//button[@id='remove-sauce-labs-backpack']");
     }
 
     get btnAddBikeLight() {
-        return browser.$("//button[@id='add-to-cart-sauce-labs-bike-light']"); //
+        return browser.$("//button[@id='add-to-cart-sauce-labs-bike-light']");
     }
 
     get btnRemoveBikeLight() {
-        return browser.$("//button[@id='remove-sauce-labs-bike-light']"); //
+        return browser.$("//button[@id='remove-sauce-labs-bike-light']");
     }
 
     get filterDropdownMenu() {
@@ -32,6 +33,22 @@ class ProductsPage extends PageObject {
 
     get filterActiveOption() {
         return browser.$("//span[@class='active_option']");
+    }
+
+    get btnLoHiPrice() {
+        return browser.$('//option[@value="lohi"]');
+    }
+
+    get btnHiLoPrice() {
+        return browser.$('//option[@value="hilo"]');
+    }
+
+    get btnAZName() {
+        return browser.$('//option[@value="az"]');
+    }
+
+    get btnZAName() {
+        return browser.$('//option[@value="za"]');
     }
 
     get productsHeader() {
@@ -51,7 +68,7 @@ class ProductsPage extends PageObject {
     }
 
     get allItemsPrices() {
-        return browser.$$('//div[@class="inventory_item_price"]');
+        return browser.$$("//div[@class = 'inventory_item_price']");
     }
 
     get allItemsDescriptions() {
@@ -60,26 +77,6 @@ class ProductsPage extends PageObject {
 
     get btnAddToCart() {
         return browser.$$('//button[@class="btn btn_primary btn_small btn_inventory"]');
-    }
-
-    get twitterIcon() {
-        return browser.$('//a[@href="https://twitter.com/saucelabs"]');
-    }
-
-    get facebookIcon() {
-        return browser.$('//a[@href="https://www.facebook.com/saucelabs"]');
-    }
-
-    get linkedInIcon() {
-        return browser.$('//a[@href="https://www.linkedin.com/company/sauce-labs/"]');
-    }
-
-    get copyright() {
-        return browser.$('//div[@class="footer_copy"]');
-    }
-
-    get robotFooter() {
-        return browser.$('//img[@alt="Swag Bot Footer"]');
     }
 
     async addMultipleItems() {
@@ -99,8 +96,10 @@ class ProductsPage extends PageObject {
             case 'prices':
                 let productsPrices = [];
                 const productPrice = await this.allItemsPrices;
+                let numberPrice
                 for (let i = 0; i < productPrice.length; i++) {
-                    productsPrices.push(await productPrice[i].getText());
+                    numberPrice = await productPrice[i].getText() //am incercat sa folosesc direct sintaxa aceasta cu un rand mai jos si nu a mers decat astfel
+                    productsPrices.push(numberPrice.replace("$", ""));
                 }
                 return productsPrices
             case 'images':
@@ -128,7 +127,24 @@ class ProductsPage extends PageObject {
         }
         return addToCartButtons
     }
+
+    async filterData(option) {
+        await this.filterDropdownMenu.click()
+        switch (option){
+            case 'priceAscending':
+                await this.btnLoHiPrice.click()
+                break
+            case 'priceDescending':
+                await this.btnHiLoPrice.click()
+                break
+            case 'nameAscending':
+                await this.btnAZName.click()
+                break
+            case 'nameDescending':
+                await this.btnZAName.click()
+                break
+        }
+    }
 }
 
 module.exports = new ProductsPage();
-
