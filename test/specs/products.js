@@ -100,38 +100,6 @@ describe('Products Page Tests', () => {
         })
     })
 
-    describe("Products Test", () => {
-
-        beforeEach(async function () {
-            await LoginPage.open();
-            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
-        });
-
-        afterEach(async function () {
-            await ProductsPage.logout();
-        });
-
-        it("the user should be able to add to cart and remove the 'Sauce Labs Backpack' product",
-            async () => {
-            await ProductsPage.btnAddBackpack.click();
-
-            expect(await ProductsPage.btnAddBackpack.isDisplayed()).toBe(false);
-            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
-
-            await ProductsPage.btnRemoveBackpack.click();
-
-            expect(await ProductsPage.shoppingCartLabel.isDisplayed()).toBe(false);
-        });
-
-        it("the shopping cart label number should decrease after removing a product", async () => {
-            await ProductsPage.addMultipleItems();
-            await ProductsPage.btnRemoveBackpack.click();
-
-            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
-            await ProductsPage.btnRemoveBikeLight.click();
-        });
-    });
-
     describe("Burger Menu Tests", () => {
 
         it("check Burger Menu UI elements", async () => {
@@ -145,6 +113,21 @@ describe('Products Page Tests', () => {
             expect(bmItemsText).toContain(BurgerMenuText.resetAppState.toUpperCase());
 
             await ProductsPage.btnLogout.click();
+        })
+
+        it("the 'X' button should close the burger menu", async () => {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+            await ProductsPage.btnBurgerMenu.click();
+            await ProductsPage.btnCloseBurgerMenu.waitForClickable();
+            await ProductsPage.btnCloseBurgerMenu.click();
+            await ProductsPage.btnBurgerMenu.waitForClickable();
+
+            expect(await ProductsPage.btnCloseBurgerMenu.isDisplayed()).toBe(false)
+            expect(await ProductsPage.btnLogout.isDisplayed()).toBe(false)
+            expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true)
+
+            await LoginPage.logout();
         })
 
         it("the 'About' button should redirect to the 'https://saucelabs.com/' url", async () => {
@@ -167,6 +150,39 @@ describe('Products Page Tests', () => {
             expect(await browser.getUrl()).toContain(LoginPage.url);
         })
     })
+
+    describe("Products Tests", () => {
+
+        beforeEach(async function () {
+            await LoginPage.open();
+            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+        });
+
+        afterEach(async function () {
+            await ProductsPage.logout();
+        });
+
+        it("the user should be able to add to cart and remove the 'Sauce Labs Backpack' product",
+            async () => {
+            await ProductsPage.btnAddBackpack.click();
+
+            expect(await ProductsPage.btnAddBackpack.isDisplayed()).toBe(false);
+            expect(await ProductsPage.btnRemoveBackpack.isDisplayed()).toBe(true);
+            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
+
+            await ProductsPage.btnRemoveBackpack.click();
+
+            expect(await ProductsPage.shoppingCartLabel.isDisplayed()).toBe(false);
+        });
+
+        it("the shopping cart label number should decrease after removing a product", async () => {
+            await ProductsPage.addMultipleItems();
+            await ProductsPage.btnRemoveBackpack.click();
+
+            expect(await ProductsPage.shoppingCartLabel.getText()).toEqual("1");
+            await ProductsPage.btnRemoveBikeLight.click();
+        });
+    });
 
     describe('Filter functionality Tests', () => {
 

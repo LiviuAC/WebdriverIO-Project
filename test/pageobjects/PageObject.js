@@ -32,6 +32,11 @@ class PageObject {
         return browser.$$("a[class='bm-item menu-item']");
     }
 
+    get btnCloseBurgerMenu() {
+        return browser.$("button[id='react-burger-cross-btn']");
+    }
+
+
     get btnAllItems() {
         return browser.$("a[id='inventory_sidebar_link']");
     }
