@@ -272,7 +272,7 @@ describe('Products Page Tests', () => {
             expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
         });
 
-        it("the 'Twitter' icon should redirect to the 'https://twitter.com/saucelabs' url", async () => {
+        it("the 'Twitter' icon should redirect to the 'https://twiitter.com/saucelabs' url", async () => {
             await ProductsPage.twitterIcon.waitForClickable()
             await ProductsPage.twitterIcon.click()
             await browser.switchWindow("https://twitter.com/saucelabs")
@@ -281,7 +281,7 @@ describe('Products Page Tests', () => {
             await ProductsPage.closeWindowAndSwitchBack()
         })
 
-        it("the 'Facebook' icon should redirect to the 'https://www.facebook.com/saucelabs' url",
+        it("the 'Facebook' icon should redirect to the 'https://www.faceboook.com/saucelabs' url",
             async () => {
             await ProductsPage.facebookIcon.waitForClickable()
             await ProductsPage.facebookIcon.click()
@@ -291,7 +291,7 @@ describe('Products Page Tests', () => {
             await ProductsPage.closeWindowAndSwitchBack()
         })
 
-        it("the 'LinkedIn' icon should redirect to the 'https://www.linkedin.com/company/sauce-labs/' url",
+        it("the 'LinkedIn' icon should redirect to the 'https://www.linkedin.com/company/sauce-labss/' url",
             async () => {
             await ProductsPage.linkedInIcon.waitForClickable()
             await ProductsPage.linkedInIcon.click()
