@@ -34,6 +34,22 @@ class ProductsPage extends PageObject {
         return browser.$("//span[@class='active_option']");
     }
 
+    get btnLoHiPrice() {
+        return browser.$('//option[@value="lohi"]');
+    }
+
+    get btnHiLoPrice() {
+        return browser.$('//option[@value="hilo"]');
+    }
+
+    get btnAZName() {
+        return browser.$('//option[@value="az"]');
+    }
+
+    get btnZAName() {
+        return browser.$('//option[@value="za"]');
+    }
+
     get productsHeader() {
         return browser.$("//span[@class='title']");
     }
@@ -107,6 +123,24 @@ class ProductsPage extends PageObject {
             addToCartButtons.push(await addToCart[i].getText());
         }
         return addToCartButtons
+    }
+
+    async filterData(option) {
+        await this.filterDropdownMenu.click()
+        switch (option){
+            case 'priceAscending':
+                await this.btnLoHiPrice.click()
+                break
+            case 'priceDescending':
+                await this.btnHiLoPrice.click()
+                break
+            case 'nameAscending':
+                await this.btnAZName.click()
+                break
+            case 'nameDescending':
+                await this.btnZAName.click()
+                break
+        }
     }
 }
 

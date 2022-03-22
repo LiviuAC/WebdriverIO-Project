@@ -99,6 +99,11 @@ class PageObject {
         }
         return bmItemsText
     }
+
+    async closeWindowAndSwitchBack() {
+        await browser.closeWindow()
+        await browser.switchWindow('Swag Labs')
+    }
 }
 
 exports.PageObject = PageObject;

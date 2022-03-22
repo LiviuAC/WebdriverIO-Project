@@ -2,7 +2,7 @@ const LoginPage = require("../pageobjects/LoginPage");
 const ProductsPage = require("../pageobjects/ProductsPage");
 const CartPage = require("../pageobjects/YourCartPage");
 const { CREDENTIALS } = require("../helper/credentials");
-const { ImageSource, ProductPrices, filterOptions, ProductDescriptions, BurgerMenu} = require("../helper/inventoryData");
+const { ImageSource, ProductPrices, filterOptions, ProductDescriptions, BurgerMenuText} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
 const {titleContains} = require("wdio-wait-for");
 
@@ -151,10 +151,10 @@ describe('Products Page Tests', () => {
             await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
             const bmItemsText = await ProductsPage.burgerMenuItemsText()
 
-            expect(bmItemsText).toContain(BurgerMenu.allItems.toUpperCase());
-            expect(bmItemsText).toContain(BurgerMenu.about.toUpperCase());
-            expect(bmItemsText).toContain(BurgerMenu.logout.toUpperCase());
-            expect(bmItemsText).toContain(BurgerMenu.resetAppState.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenuText.allItems.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenuText.about.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenuText.logout.toUpperCase());
+            expect(bmItemsText).toContain(BurgerMenuText.resetAppState.toUpperCase());
 
             await ProductsPage.btnLogout.click();
         })
@@ -180,7 +180,7 @@ describe('Products Page Tests', () => {
         })
     })
 
-    xdescribe('Filter functionality Tests', () => {
+    describe('Filter functionality Tests', () => {
 
         beforeEach(async function () {
             await LoginPage.open();
@@ -191,47 +191,77 @@ describe('Products Page Tests', () => {
             await ProductsPage.logout();
         });
 
-        it("should display all the 6 products prices sorted in ascending order", async () => {
-            //#TODO: sa introduc metoda de a ordona in pagina si a lua valorile si sa corectez diferite nume de variabile
-            let expectedProductPrices = [];
-            let productsPrices = [];
+        it("should display all the 6 products names sorted in descending order", async () => {
+            await ProductsPage.filterData('nameDescending')
+            const descendingProductsNames = await ProductsPage.productData('names');
+            const descendingExpectedProductsNames = Object.values(ProductNames)
 
-            const productPrice = await ProductsPage.allItemsPrices;
+            expect(descendingProductsNames).toEqual(descendingExpectedProductsNames.reverse());
+            await ProductsPage.filterData('nameAscending')
+        });
+
+        it("should display all the 6 products names sorted in ascending order", async () => {
+            await ProductsPage.filterData('nameDescending')
+            await ProductsPage.filterData('nameAscending')
+            const ascendingProductsNames = await ProductsPage.productData('names');
+            const ascendingExpectedProductsNames = Object.values(ProductNames)
+
+            expect(ascendingProductsNames).toEqual(ascendingExpectedProductsNames);
+        });
+
+        it("should display all the 6 products prices sorted in descending order", async () => {
+            let descendingExpectedProductsPrices = [];
+            let descendingProductsPrices = [];
+            await ProductsPage.filterData('priceDescending')
+            const productPrice = await ProductsPage.productData('prices');
+            const dictValues = Object.values(ProductPrices)
+
             for (let i = 0; i < productPrice.length; i++) {
-                productsPrices.push(await productPrice[i].getText());
+                descendingProductsPrices.push(Number(productPrice[i].replace("$", "")));
             }
 
-            let sortedProductsPrices = [];
-            for (let i = 0; i < productsPrices.length; i++) {
-                sortedProductsPrices.push(Number(productsPrices[i].replace("$", "")));
-                // console.log("type of: ", typeof Number(productsPrices[i].replace('$','')))
+            for (let i = 0; i < dictValues.length; i++) {
+                descendingExpectedProductsPrices.push(Number(dictValues[i].replace("$", "")));
             }
-            sortedProductsPrices.sort((a, b) => a - b);
-            console.log("sorted prices: ", sortedProductsPrices);
+            descendingExpectedProductsPrices.sort((a, b) => b - a);
 
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
+            expect(descendingProductsPrices).toEqual(descendingExpectedProductsPrices);
+            await ProductsPage.filterData('nameAscending')
+        });
 
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
+        it("should display all the 6 products prices sorted in ascending order", async () => {
+            let ascendingExpectedProductsPrices = [];
+            let ascendingProductsPrices = [];
+            await ProductsPage.filterData('priceAscending')
+            const productPrice = await ProductsPage.productData('prices');
+            const dictValues = Object.values(ProductPrices)
 
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
+            for (let i = 0; i < productPrice.length; i++) {
+                ascendingProductsPrices.push(Number(productPrice[i].replace("$", "")));
+            }
 
-            // let dictValues = Object.values(ProductPrices)
-            // // expectedProductPrices.push(price)
-            // console.log('expected prices: ', dictValues)
+            for (let i = 0; i < dictValues.length; i++) {
+                ascendingExpectedProductsPrices.push(Number(dictValues[i].replace("$", "")));
+            }
+            ascendingExpectedProductsPrices.sort((a, b) => a - b);
+
+            expect(ascendingProductsPrices).toEqual(ascendingExpectedProductsPrices);
+            await ProductsPage.filterData('nameAscending')
         });
     })
 
     describe('Footer Tests', () => {
 
-        it("check Footer UI elements", async () => {
+        beforeEach(async function () {
             await LoginPage.open();
             await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
+        });
+
+        afterEach(async function () {
+            await ProductsPage.logout();
+        });
+
+        it("check Footer UI elements", async () => {
 
             expect(await ProductsPage.twitterIcon.isDisplayed()).toBe(true);
             expect(await ProductsPage.facebookIcon.isDisplayed()).toBe(true);
@@ -240,48 +270,35 @@ describe('Products Page Tests', () => {
             expect(await ProductsPage.copyright.getText()).toContain("© 2022 Sauce Labs. All Rights Reserved. Terms of Service | Privacy Policy");
             expect(await ProductsPage.robotFooter.isDisplayed()).toBe(true);
             expect(await ProductsPage.robotFooter.getAttribute('src')).toEqual(ImageSource.footerRobot);
-
-            await ProductsPage.logout();
         });
 
         it("the 'Twitter' icon should redirect to the 'https://twitter.com/saucelabs' url", async () => {
-            await LoginPage.open();
-            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
             await ProductsPage.twitterIcon.waitForClickable()
             await ProductsPage.twitterIcon.click()
             await browser.switchWindow("https://twitter.com/saucelabs")
 
             expect(await browser.getUrl()).toEqual("https://twitter.com/saucelabs");
-            await browser.closeWindow()
-            await browser.switchWindow('Swag Labs')
+            await ProductsPage.closeWindowAndSwitchBack()
         })
 
         it("the 'Facebook' icon should redirect to the 'https://www.facebook.com/saucelabs' url",
             async () => {
-            await LoginPage.open();
-            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
             await ProductsPage.facebookIcon.waitForClickable()
             await ProductsPage.facebookIcon.click()
             await browser.switchWindow("https://www.facebook.com/saucelabs")
 
             expect(await browser.getUrl()).toEqual("https://www.facebook.com/saucelabs");
-            await browser.closeWindow()
-            await browser.switchWindow('Swag Labs')
+            await ProductsPage.closeWindowAndSwitchBack()
         })
-
 
         it("the 'LinkedIn' icon should redirect to the 'https://www.linkedin.com/company/sauce-labs/' url",
             async () => {
-            await LoginPage.open();
-            await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
             await ProductsPage.linkedInIcon.waitForClickable()
             await ProductsPage.linkedInIcon.click()
             await browser.switchWindow("https://www.linkedin.com/company/sauce-labs/")
 
-
             expect(await browser.getUrl()).toEqual("https://www.linkedin.com/company/sauce-labs/");
-            await browser.closeWindow()
-            await browser.switchWindow('Swag Labs')
+            await ProductsPage.closeWindowAndSwitchBack()
         })
     })
 })

@@ -48,7 +48,7 @@ exports.ProductDescriptions = {
         "to automate a few tests. Super-soft and comfy ringspun combed cotton."
 }
 
-exports.BurgerMenu = {
+exports.BurgerMenuText = {
     allItems: 'All Items',
     about:'About',
     logout: 'Logout',
