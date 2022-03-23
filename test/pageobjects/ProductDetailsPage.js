@@ -19,11 +19,11 @@ class ProductDetails extends PageObject {
     }
 
     get detailsName() {
-        return browser.$("//div[@class='inventory_details_name large_size']");
+        return browser.$("//*[contains(@class,'inventory_details_name')]")
     }
 
     get detailsDescription() {
-        return browser.$("//div[@class='inventory_details_desc large_size']");
+        return browser.$("//*[contains(@class,'inventory_details_desc ')]");
     }
 
     get detailsPrice() {
