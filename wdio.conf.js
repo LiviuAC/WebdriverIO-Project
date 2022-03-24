@@ -45,6 +45,12 @@ exports.config = {
         footerIconsFunctionalityTests: [
             './test/specs/footerIconsFunctionalityTests.js'
         ],
+        cartPage: [
+            './test/specs/cartPage.js'
+        ],
+        checkoutPage: [
+            './test/specs/checkoutPage.js'
+        ],
     },
     // Patterns to exclude.
     exclude: [

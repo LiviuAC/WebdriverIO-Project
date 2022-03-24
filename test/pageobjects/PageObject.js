@@ -24,6 +24,10 @@ class PageObject {
         return browser.$("div[class='app_logo']");
     }
 
+    get header() {
+        return browser.$("//span[@class='title']");
+    }
+
     get btnBurgerMenu() {
         return browser.$("#react-burger-menu-btn");
     }
