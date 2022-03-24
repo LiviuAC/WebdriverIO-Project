@@ -98,7 +98,7 @@ class ProductsPage extends PageObject {
                 const productPrice = await this.allItemsPrices;
                 let numberPrice
                 for (let i = 0; i < productPrice.length; i++) {
-                    numberPrice = await productPrice[i].getText() //am incercat sa folosesc direct sintaxa aceasta cu un rand mai jos si nu a mers decat astfel
+                    numberPrice = await productPrice[i].getText()
                     productsPrices.push(numberPrice.replace("$", ""));
                 }
                 return productsPrices

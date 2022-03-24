@@ -38,7 +38,13 @@ exports.config = {
         ],
         productDetails: [
             './test/specs/productDetails.js'
-        ]
+        ],
+        burgerMenu: [
+            './test/specs/burgerMenu.js'
+        ],
+        footerIconsFunctionalityTests: [
+            './test/specs/footerIconsFunctionalityTests.js'
+        ],
     },
     // Patterns to exclude.
     exclude: [
