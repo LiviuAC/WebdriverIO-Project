@@ -31,52 +31,11 @@ class CheckoutPage extends PageObject {
         return browser.$("//input[@id='continue']");
     }
 
-    async fillForm(option) {
-        switch (option) {
-            case "validInputs":
-                await this.firstNameText.setValue("testFirstName")
-                await this.lastNameText.setValue("testLastName")
-                await this.zipCodeText.setValue("000000")
-                await this.btnContinue.click()
-                break
-            case "emptyFormFields":
-                await this.firstNameText.setValue("")
-                await this.lastNameText.setValue("")
-                await this.zipCodeText.setValue("")
-                await this.btnContinue.click()
-                break
-            case "emptyFirstNameField":
-                await this.firstNameText.setValue("")
-                await this.lastNameText.setValue("testLastName")
-                await this.zipCodeText.setValue("000000")
-                await this.btnContinue.click()
-                break
-            case "emptyLastNameField":
-                await this.firstNameText.setValue("testLastName")
-                await this.lastNameText.setValue("")
-                await this.zipCodeText.setValue("000000")
-                await this.btnContinue.click()
-                break
-            case "emptyZipCodeField":
-                await this.firstNameText.setValue("testFirstName")
-                await this.lastNameText.setValue("testLastName")
-                await this.zipCodeText.setValue("")
-                await this.btnContinue.click()
-                break
-            case "fiveNumbersZipCodeField":
-                await this.firstNameText.setValue("testFirstName")
-                await this.lastNameText.setValue("testLastName")
-                await this.zipCodeText.setValue("00000")
-                await this.btnContinue.click()
-                break
-            case "lettersZipCodeField":
-                await this.firstNameText.setValue("testFirstName")
-                await this.lastNameText.setValue("testLastName")
-                await this.zipCodeText.setValue("testZipCode")
-                await this.btnContinue.click()
-                break
-        }
-    }
+    async fillForm(firstName, lastName, zipCodeText) {
+        await this.firstNameText.setValue(firstName)
+        await this.lastNameText.setValue(lastName)
+        await this.zipCodeText.setValue(zipCodeText)
+        await this.btnContinue.click() }
 
     // checkout step two
 
