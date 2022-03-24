@@ -1,7 +1,7 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const {CREDENTIALS} = require("../helper/testData");
 const ProductsPage = require("../pageobjects/ProductsPage");
-const CheckoutStepOnePage = require("../pageobjects/checkoutStepOnePage");
+const Checkout = require("../pageobjects/CheckoutPage");
 const CartPage = require("../pageobjects/CartPage");
 const {ImageSource, ProductNames, ProductDescriptions} = require("../helper/inventoryData");
 
@@ -126,7 +126,7 @@ describe(" Cart Page Tests", () => {
             await CartPage.btnCheckout.waitForClickable()
             await CartPage.btnCheckout.click()
 
-            expect(await browser.getUrl()).toContain(CheckoutStepOnePage.url);
+            expect(await browser.getUrl()).toContain(Checkout.url);
         })
     })
 })

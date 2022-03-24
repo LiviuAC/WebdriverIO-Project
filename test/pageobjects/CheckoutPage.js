@@ -1,6 +1,6 @@
 const {PageObject} = require("./PageObject");
 
-class checkoutStepOnePage extends PageObject {
+class CheckoutPage extends PageObject {
 
     get url() {
         return '/checkout-step-one.html'
@@ -82,4 +82,4 @@ class checkoutStepOnePage extends PageObject {
 
 }
 
-module.exports = new checkoutStepOnePage();
+module.exports = new CheckoutPage();
