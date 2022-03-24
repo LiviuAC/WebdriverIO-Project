@@ -1,7 +1,7 @@
 const LoginPage = require("../pageobjects/LoginPage");
-const {CREDENTIALS} = require("../helper/credentials");
+const {CREDENTIALS} = require("../helper/testData");
 const ProductsPage = require("../pageobjects/ProductsPage");
-const CheckoutPage = require("../pageobjects/CheckoutPage");
+const CheckoutStepOnePage = require("../pageobjects/checkoutStepOnePage");
 const CartPage = require("../pageobjects/CartPage");
 const {ImageSource, ProductNames, ProductDescriptions} = require("../helper/inventoryData");
 
@@ -60,7 +60,7 @@ describe(" Cart Page Tests", () => {
         });
     })
 
-    describe("Access the Products Details page directly without login Test", () => {
+    describe("Access the Cart page directly without login Test", () => {
 
         it("should not be able to access the page directly without login", async () => {
             await CartPage.open();
@@ -126,7 +126,7 @@ describe(" Cart Page Tests", () => {
             await CartPage.btnCheckout.waitForClickable()
             await CartPage.btnCheckout.click()
 
-            expect(await browser.getUrl()).toContain(CheckoutPage.url);
+            expect(await browser.getUrl()).toContain(CheckoutStepOnePage.url);
         })
     })
 })

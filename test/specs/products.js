@@ -1,6 +1,6 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const ProductsPage = require("../pageobjects/ProductsPage");
-const { CREDENTIALS } = require("../helper/credentials");
+const { CREDENTIALS } = require("../helper/testData");
 const { ImageSource, filterOptions, ProductDescriptions} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
 

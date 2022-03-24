@@ -1,6 +1,6 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const InventoryPage = require("../pageobjects/ProductsPage");
-const { CREDENTIALS } = require("../helper/credentials");
+const { CREDENTIALS } = require("../helper/testData");
 const { ImageSource} = require("../helper/inventoryData");
 
 describe('Login Page Tests', () => {
@@ -52,11 +52,12 @@ describe('Login Page Tests', () => {
     });
 
     describe("Login Positive Tests", () => {
+
         it("should login with valid credentials", async () => {
             await LoginPage.open();
             await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
 
-            expect(await InventoryPage.productsHeader.isDisplayed()).toBe(true);
+            expect(await InventoryPage.header.isDisplayed()).toBe(true);
         });
 
         it("should not login with locked credentials", async () => {
@@ -100,13 +101,22 @@ describe('Login Page Tests', () => {
     });
 
     describe("Login Negative Tests", () => {
+
         it("should not login with no username and password", async () => {
             await LoginPage.open();
             await LoginPage.login(``, ``);
 
-            expect(await LoginPage.errorMessage.getText()).toEqual(
-                "Epic sadface: Username is required"
-            );
+            expect(await LoginPage.errorMessage.getText()).toEqual("Epic sadface: Username is required");
+            expect(await LoginPage.errorButton.isDisplayed()).toBe(true)
+        });
+
+        it("should not display the error message upon clicking on the close error button", async () => {
+            await LoginPage.open();
+            await LoginPage.login(``, ``);
+            await LoginPage.errorButton.click()
+
+            expect(await LoginPage.errorMessage.isDisplayed()).toBe(false);
+            expect(await LoginPage.errorButton.isDisplayed()).toBe(false)
         });
 
         it("should not login with no password", async () => {
@@ -116,6 +126,7 @@ describe('Login Page Tests', () => {
             expect(await LoginPage.errorMessage.getText()).toEqual(
                 "Epic sadface: Password is required"
             );
+            expect(await LoginPage.errorButton.isDisplayed()).toBe(true)
         });
 
         it("should not login with no username", async () => {
@@ -125,33 +136,37 @@ describe('Login Page Tests', () => {
             expect(await LoginPage.errorMessage.getText()).toEqual(
                 "Epic sadface: Username is required"
             );
+            expect(await LoginPage.errorButton.isDisplayed()).toBe(true)
         });
 
         it("should not login with wrong password", async () => {
             await LoginPage.open();
-            await LoginPage.login(CREDENTIALS.standard, `test`);
+            await LoginPage.login(CREDENTIALS.standard, `testPassword`);
 
             expect(await LoginPage.errorMessage.getText()).toEqual(
                 "Epic sadface: Username and password do not match any user in this service"
             );
+            expect(await LoginPage.errorButton.isDisplayed()).toBe(true)
         });
 
         it("should not login with wrong username", async () => {
             await LoginPage.open();
-            await LoginPage.login(`test`, CREDENTIALS.password);
+            await LoginPage.login(`testUsername`, CREDENTIALS.password);
 
             expect(await LoginPage.errorMessage.getText()).toEqual(
                 "Epic sadface: Username and password do not match any user in this service"
             );
+            expect(await LoginPage.errorButton.isDisplayed()).toBe(true)
         });
 
         it("should not login with wrong username and wrong password", async () => {
             await LoginPage.open();
-            await LoginPage.login(`test`, "test");
+            await LoginPage.login(`testUsername`, "testPassword");
 
             expect(await LoginPage.errorMessage.getText()).toEqual(
                 "Epic sadface: Username and password do not match any user in this service"
             );
+            expect(await LoginPage.errorButton.isDisplayed()).toBe(true)
         });
     });
 })

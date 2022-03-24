@@ -20,6 +20,14 @@ class PageObject {
         return browser.getTitle();
     }
 
+    get errorMessage() {
+        return browser.$("h3[data-test='error']");
+    }
+
+    get errorButton() {
+        return browser.$("button[class='error-button']");
+    }
+
     get appLogo(){
         return browser.$("div[class='app_logo']");
     }

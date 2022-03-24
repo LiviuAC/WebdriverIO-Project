@@ -1,5 +1,5 @@
 const LoginPage = require("../pageobjects/LoginPage");
-const {CREDENTIALS} = require("../helper/credentials");
+const {CREDENTIALS} = require("../helper/testData");
 const ProductsPage = require("../pageobjects/ProductsPage");
 const {BurgerMenuText} = require("../helper/inventoryData");
 
