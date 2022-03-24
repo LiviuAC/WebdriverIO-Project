@@ -51,10 +51,6 @@ class ProductsPage extends PageObject {
         return browser.$('//option[@value="za"]');
     }
 
-    get productsHeader() {
-        return browser.$("//span[@class='title']");
-    }
-
     get robotPeek() {
         return browser.$("//div[@class='peek']");
     }

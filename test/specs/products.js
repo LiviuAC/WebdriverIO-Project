@@ -1,10 +1,8 @@
 const LoginPage = require("../pageobjects/LoginPage");
 const ProductsPage = require("../pageobjects/ProductsPage");
-const CartPage = require("../pageobjects/YourCartPage");
 const { CREDENTIALS } = require("../helper/credentials");
-const { ImageSource, filterOptions, ProductDescriptions, BurgerMenuText} = require("../helper/inventoryData");
+const { ImageSource, filterOptions, ProductDescriptions} = require("../helper/inventoryData");
 const { ProductNames } = require("../helper/inventoryData");
-const {titleContains} = require("wdio-wait-for");
 
 describe('Products Page Tests', () => {
 
@@ -30,7 +28,7 @@ describe('Products Page Tests', () => {
             expect(await ProductsPage.btnBurgerMenu.isDisplayed()).toBe(true);
             expect(await ProductsPage.appLogo.isDisplayed()).toBe(true);
             expect(await ProductsPage.shoppingCartIcon.isDisplayed()).toBe(true);
-            expect(await ProductsPage.productsHeader.getText()).toEqual("PRODUCTS");
+            expect(await ProductsPage.header.getText()).toEqual("PRODUCTS");
             expect(await ProductsPage.robotPeek.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterDropdownMenu.isDisplayed()).toBe(true);
             expect(await ProductsPage.filterActiveOption.getText()).toEqual(filterOptions.nameAscending.toUpperCase());

@@ -5,6 +5,7 @@ const {CREDENTIALS} = require("../helper/credentials");
 const {ImageSource, ProductNames, ProductDescriptions} = require("../helper/inventoryData");
 
 describe(" Product Details Page Tests", () => {
+
     describe("Products Details Page UI Tests", () => {
 
         beforeEach(async function () {
