@@ -57,6 +57,9 @@ exports.config = {
         checkoutStepTwoPage: [
             './test/specs/checkoutStepTwoPage.js'
         ],
+        checkoutCompletePage: [
+            './test/specs/checkoutCompletePage.js'
+        ],
     },
     // Patterns to exclude.
     exclude: [

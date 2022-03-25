@@ -10,3 +10,4 @@ In order to run only a test suite, write the following command in terminal:
 - for Cart test suite: yarn wdio --suite cartPage
 - for CheckoutStepOnePage test suite: yarn wdio --suite checkoutStepOnePage
 - for CheckoutStepTwoPage test suite: yarn wdio --suite checkoutStepTwoPage
+- for CheckoutCompletePage test suite: yarn wdio --suite checkoutCompletePage
