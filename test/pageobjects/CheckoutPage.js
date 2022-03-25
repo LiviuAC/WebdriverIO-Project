@@ -50,9 +50,11 @@ class CheckoutPage extends PageObject {
     get itemTotalPriceText() {
         return browser.$("//div[@class='summary_subtotal_label']");
     }
+
     get taxPriceText() {
         return browser.$("//div[@class='summary_tax_label']");
     }
+
     get totalPriceText() {
         return browser.$("//div[@class='summary_total_label']");
     }
@@ -114,6 +116,18 @@ class CheckoutPage extends PageObject {
 
     get btnBackHome() {
         return browser.$("//button[@id='back-to-products']");
+    }
+
+    get completeHeaderText() {
+        return browser.$("//h2[@class='complete-header']");
+    }
+
+    get completeText() {
+        return browser.$("//div[@class='complete-text']");
+    }
+
+    get ponyExpressImage() {
+        return browser.$("//img[@alt='Pony Express']");
     }
 }
 

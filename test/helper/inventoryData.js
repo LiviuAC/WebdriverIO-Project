@@ -12,7 +12,8 @@ exports.ImageSource = {
     fleeceJacket: '/static/media/sauce-pullover-1200x1500.439fc934.jpg',
     onesie: '/static/media/red-onesie-1200x1500.1b15e1fa.jpg',
     redShirt: '/static/media/red-tatt-1200x1500.e32b4ef9.jpg',
-    footerRobot: '/static/media/SwagBot_Footer_graphic.2e87acec.png'
+    footerRobot: '/static/media/SwagBot_Footer_graphic.2e87acec.png',
+    ponyExpress: '/static/media/pony-express.46394a5d.png'
 }
 
 exports.ProductNames = {
