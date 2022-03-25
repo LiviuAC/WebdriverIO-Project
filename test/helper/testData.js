@@ -5,3 +5,8 @@ exports.CREDENTIALS = {
     performance: 'performance_glitch_user',
     password: "secret_sauce"
 }
+
+exports.checkoutURL = {
+    stepOne: 'checkout-step-one.html',
+    stepTwo: 'checkout-step-two.html',
+}

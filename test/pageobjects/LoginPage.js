@@ -28,10 +28,6 @@ class LoginPage extends PageObject {
         return browser.$("#login-button");
     }
 
-    get errorMessage() {
-        return browser.$("h3[data-test='error']");
-    }
-
     get imageLocation() {
         return browser.$("#item_4_img_link > img");
     }

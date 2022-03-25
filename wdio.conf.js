@@ -48,6 +48,9 @@ exports.config = {
         cartPage: [
             './test/specs/cartPage.js'
         ],
+        checkoutStepOnePage: [
+            './test/specs/checkoutStepOnePage.js'
+        ],
     },
     // Patterns to exclude.
     exclude: [
