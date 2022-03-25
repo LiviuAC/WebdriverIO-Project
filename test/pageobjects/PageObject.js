@@ -64,12 +64,40 @@ class PageObject {
         return browser.$("a[id='reset_sidebar_link']");
     }
 
+    get btnCancel() {
+        return browser.$("//button[@id='cancel']");
+    }
+
     get shoppingCartIcon() {
         return browser.$("a[class='shopping_cart_link']");
     }
 
     get shoppingCartLabel() {
         return browser.$("span[class='shopping_cart_badge']");
+    }
+
+    get quantityLabelText() {
+        return browser.$("//div[@class='cart_quantity_label']");
+    }
+
+    get descriptionLabelText() {
+        return browser.$("//div[@class='cart_desc_label']");
+    }
+
+    get productQuantityText() {
+        return browser.$("//div[@class='cart_quantity']");
+    }
+
+    get productNameText() {
+        return browser.$("//div[@class='inventory_item_name']");
+    }
+
+    get productDescriptionText() {
+        return browser.$("//div[@class='inventory_item_desc']");
+    }
+
+    get productPriceText() {
+        return browser.$("//div[@class='inventory_item_price']");
     }
 
     get twitterIcon() {

@@ -29,6 +29,9 @@ exports.config = {
     ],
 
     suites: {
+        smokeTest: [
+            './test/specs/smokeTest.js'
+        ],
         login: [
             './test/specs/login.js'
         ],
@@ -50,6 +53,9 @@ exports.config = {
         ],
         checkoutStepOnePage: [
             './test/specs/checkoutStepOnePage.js'
+        ],
+        checkoutStepTwoPage: [
+            './test/specs/checkoutStepTwoPage.js'
         ],
     },
     // Patterns to exclude.
