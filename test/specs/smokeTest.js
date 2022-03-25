@@ -12,6 +12,6 @@ describe("Smoke Test", () => {
         await CheckoutPage.btnFinish.click()
 
         expect(await browser.getUrl()).toContain(checkoutURL.complete);
-        await CheckoutPage.btnBackHome.click()
+        await LoginPage.logout()
     })
 })
