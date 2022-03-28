@@ -148,6 +148,29 @@ class PageObject {
         await browser.closeWindow()
         await browser.switchWindow('Swag Labs')
     }
+
+    async extractTextData(elementToExtractFrom) {
+        let productsData = []
+        const productElement = await elementToExtractFrom;
+
+        for (let i = 0; i < productElement.length; i++) {
+            let data = await productElement[i].getText()
+            if (data.includes("$")) {
+                data = Number(data.replace("$", ""));
+            }
+            productsData.push(data)
+        }
+        return productsData
+    }
+
+    async extractImageData(elementToExtractFrom) {
+        let productsData = []
+        const productImage = await elementToExtractFrom;
+        for (let i = 0; i < productImage.length; i++) {
+            productsData.push(await productImage[i].getAttribute("src"));
+        }
+        return productsData
+    }
 }
 
 exports.PageObject = PageObject;

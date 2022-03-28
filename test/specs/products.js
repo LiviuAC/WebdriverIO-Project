@@ -39,7 +39,7 @@ describe('Products Page Tests', () => {
         });
 
         it("should display all the 6 products names", async () => {
-            const productsNamesText = await ProductsPage.productData('names');
+            const productsNamesText = await ProductsPage.extractTextData(ProductsPage.allItemsName);
 
             expect(productsNamesText).toContain(ProductNames.backpack);
             expect(productsNamesText).toContain(ProductNames.bikeLight);
@@ -51,7 +51,7 @@ describe('Products Page Tests', () => {
         });
 
         it("should display all the 6 products images", async () => {
-            const productsImagesSource = await ProductsPage.productData('images');
+            const productsImagesSource = await ProductsPage.extractImageData(ProductsPage.allItemsImages);
 
             expect(productsImagesSource).toContain(ImageSource.backpack);
             expect(productsImagesSource).toContain(ImageSource.bikeLight);
@@ -63,7 +63,7 @@ describe('Products Page Tests', () => {
         });
 
         it("should display all the 6 products descriptions", async () => {
-            const productsDescriptionsText = await ProductsPage.productData('descriptions');
+            const productsDescriptionsText = await ProductsPage.extractTextData(ProductsPage.allItemsDescriptions);
 
             expect(productsDescriptionsText).toContain(ProductDescriptions.backpack);
             expect(productsDescriptionsText).toContain(ProductDescriptions.bikeLight);
@@ -155,7 +155,7 @@ describe('Products Page Tests', () => {
 
         it("should display all the 6 products names sorted in descending order", async () => {
             await ProductsPage.filterData('nameDescending')
-            const descendingProductsNames = await ProductsPage.productData('names');
+            const descendingProductsNames = await ProductsPage.extractTextData(ProductsPage.allItemsName);
             const descendingExpectedProductsNames = Object.values(ProductNames)
 
             expect(descendingProductsNames).toEqual(descendingExpectedProductsNames.reverse());
@@ -164,25 +164,25 @@ describe('Products Page Tests', () => {
         it("should display all the 6 products names sorted in ascending order", async () => {
             await ProductsPage.filterData('nameDescending')
             await ProductsPage.filterData('nameAscending')
-            const ascendingProductsNames = await ProductsPage.productData('names');
+            const ascendingProductsNames = await ProductsPage.extractTextData(ProductsPage.allItemsName);
             const ascendingExpectedProductsNames = Object.values(ProductNames)
 
             expect(ascendingProductsNames).toEqual(ascendingExpectedProductsNames);
         });
 
         it("should display all the 6 products prices sorted in descending order", async () => {
-            let ProductsPrices = await ProductsPage.productData('prices');
+            let ProductsPrices = await ProductsPage.extractTextData(ProductsPage.allItemsPrices);
             await ProductsPage.filterData('priceDescending')
-            let ProductsPricesDescendingOrder = await ProductsPage.productData('prices');
+            let ProductsPricesDescendingOrder = await ProductsPage.extractTextData(ProductsPage.allItemsPrices);
             ProductsPrices.sort((a, b) => b - a);
 
             expect(ProductsPrices).toEqual(ProductsPricesDescendingOrder);
         });
 
         it("should display all the 6 products prices sorted in ascending order", async () => {
-            let ProductsPrices = await ProductsPage.productData('prices');
+            let ProductsPrices = await ProductsPage.extractTextData(ProductsPage.allItemsPrices);
             await ProductsPage.filterData('priceAscending')
-            let ProductsPricesAscendingOrder = await ProductsPage.productData('prices');
+            let ProductsPricesAscendingOrder = await ProductsPage.extractTextData(ProductsPage.allItemsPrices);
 
             ProductsPrices.sort((a, b) => a - b);
 
