@@ -1,5 +1,6 @@
 const {PageObject} = require("./PageObject");
 const {ProductPrices} = require("../helper/inventoryData");
+const CartPage = require("./CartPage");
 
 class ProductsPage extends PageObject {
 
@@ -105,6 +106,19 @@ class ProductsPage extends PageObject {
                 await this.btnZAName.click()
                 break
         }
+    }
+
+    async addProductAndProceedToCheckout(option) {
+        switch(option){
+            case 'oneItem':
+                await this.btnAddBackpack.click()
+                break
+            case 'multipleItems':
+                await this.addMultipleItems()
+                break
+        }
+        await this.shoppingCartIcon.click()
+        await CartPage.btnCheckout.click()
     }
 }
 

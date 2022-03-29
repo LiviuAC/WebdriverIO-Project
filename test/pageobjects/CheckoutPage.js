@@ -67,19 +67,6 @@ class CheckoutPage extends PageObject {
         return browser.$$('//div[@class="inventory_item_desc"]');
     }
 
-    async addProductAndProceedToCheckout(option) {
-        switch(option){
-            case 'oneItem':
-                await ProductsPage.btnAddBackpack.click()
-                break
-            case 'multipleItems':
-                await ProductsPage.addMultipleItems()
-                break
-        }
-        await ProductsPage.shoppingCartIcon.click()
-        await CartPage.btnCheckout.click()
-    }
-
     // checkout complete
 
     get btnBackHome() {
