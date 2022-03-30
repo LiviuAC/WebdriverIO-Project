@@ -12,7 +12,7 @@ describe(" Checkout Step Two Page Tests", () => {
         beforeEach(async function () {
             await LoginPage.open();
             await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
-            await CheckoutPage.addProductAndProceedToCheckout()
+            await ProductsPage.addProductAndProceedToCheckout()
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
         });
 
@@ -49,7 +49,6 @@ describe(" Checkout Step Two Page Tests", () => {
 
         it("check Item total, Tax and Total Information UI elements", async () => {
 
-            console.log("info: ", await CheckoutPage.summaryInfoText.getText())
             expect(await CheckoutPage.summaryInfoText.getText()).toContain("Item total: $");
             expect(await CheckoutPage.summaryInfoText.getText()).toContain("Tax: $0.00");
             expect(await CheckoutPage.summaryInfoText.getText()).toContain("Total: $0.00");
@@ -85,7 +84,7 @@ describe(" Checkout Step Two Page Tests", () => {
         });
 
         it("should be able to return to the 'Products' page via the 'Cancel' button", async () => {
-            await CheckoutPage.addProductAndProceedToCheckout("oneItem");
+            await ProductsPage.addProductAndProceedToCheckout("oneItem");
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
             await CheckoutPage.btnCancel.click()
 
@@ -94,7 +93,7 @@ describe(" Checkout Step Two Page Tests", () => {
         })
 
         it("should be able to return to the 'Carts' page via 'Shopping Cart' icon", async () => {
-            await CheckoutPage.addProductAndProceedToCheckout("oneItem");
+            await ProductsPage.addProductAndProceedToCheckout("oneItem");
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
             await CheckoutPage.shoppingCartIcon.click()
 
@@ -103,15 +102,16 @@ describe(" Checkout Step Two Page Tests", () => {
         })
 
         it("summary info should update upon adding the 'Sauce Labs Backpack' product", async () => {
-            await CheckoutPage.addProductAndProceedToCheckout("oneItem");
+            await ProductsPage.addProductAndProceedToCheckout("oneItem");
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
-            let checkoutProductsPrices = await CheckoutPage.checkoutProductData("prices")
-            let checkoutProductsNames = await CheckoutPage.checkoutProductData("names")
-            let checkoutProductsDescriptions = await CheckoutPage.checkoutProductData("descriptions")
 
-            let productsPrices = await ProductsPage.productData("prices")
-            let productsNames = await ProductsPage.productData("names")
-            let productsDescriptions = await ProductsPage.productData("descriptions")
+            let productsPrices = await ProductsPage.extractTextData(ProductsPage.allItemsPrices)
+            let productsNames = await ProductsPage.extractTextData(ProductsPage.allItemsName)
+            let productsDescriptions = await ProductsPage.extractTextData(ProductsPage.allItemsDescriptions)
+
+            let checkoutProductsPrices = await CheckoutPage.extractTextData(CheckoutPage.allItemsPrices)
+            let checkoutProductsNames = await CheckoutPage.extractTextData(CheckoutPage.allItemsName)
+            let checkoutProductsDescriptions = await CheckoutPage.extractTextData(CheckoutPage.allItemsDescriptions)
 
             const backpackPrice = Number(checkoutProductsPrices[0])
             const taxPrice = Number((backpackPrice * 0.08).toFixed(2))
@@ -129,19 +129,19 @@ describe(" Checkout Step Two Page Tests", () => {
         });
 
         it("summary info should update upon adding multiple products", async () => {
-            await CheckoutPage.addProductAndProceedToCheckout("multipleItems");
+            await ProductsPage.addProductAndProceedToCheckout("multipleItems");
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
-            let productsPrices = await ProductsPage.productData("prices")
-            let productsNames = await ProductsPage.productData("names")
-            let productsDescriptions = await ProductsPage.productData("descriptions")
+            let productsPrices = await ProductsPage.extractTextData(ProductsPage.allItemsPrices)
+            let productsNames = await ProductsPage.extractTextData(ProductsPage.allItemsName)
+            let productsDescriptions = await ProductsPage.extractTextData(ProductsPage.allItemsDescriptions)
 
             const backpackPrice = Number(productsPrices[0])
             const bikeLightPrice = Number(productsPrices[1])
             const taxPrice = ((backpackPrice + bikeLightPrice)* 0.08).toFixed(2)
 
-            let checkoutProductsPrices = await CheckoutPage.checkoutProductData("prices")
-            let checkoutProductsNames = await CheckoutPage.checkoutProductData("names")
-            let checkoutProductsDescriptions = await CheckoutPage.checkoutProductData("descriptions")
+            let checkoutProductsPrices = await CheckoutPage.extractTextData(CheckoutPage.allItemsPrices)
+            let checkoutProductsNames = await CheckoutPage.extractTextData(CheckoutPage.allItemsName)
+            let checkoutProductsDescriptions = await CheckoutPage.extractTextData(CheckoutPage.allItemsDescriptions)
 
             expect(checkoutProductsNames).toContain(productsNames[0]);
             expect(checkoutProductsDescriptions).toContain(productsDescriptions[0]);
@@ -159,10 +159,11 @@ describe(" Checkout Step Two Page Tests", () => {
 
             await CheckoutPage.btnCancel.click()
             await ProductsPage.btnRemoveBackpack.click()
+            await ProductsPage.btnRemoveBikeLight.click()
         });
 
         it("should be able to reach the 'Checkout: Complete' page via the 'Finish' button upon adding a product", async () => {
-            await CheckoutPage.addProductAndProceedToCheckout("oneItem");
+            await ProductsPage.addProductAndProceedToCheckout("oneItem");
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
             await CheckoutPage.btnFinish.click()
 
@@ -171,7 +172,7 @@ describe(" Checkout Step Two Page Tests", () => {
         })
 
         it("should not be able to reach the 'Checkout: Complete' page via the 'Finish' button without adding a product", async () => {
-            await CheckoutPage.addProductAndProceedToCheckout();
+            await ProductsPage.addProductAndProceedToCheckout();
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
             await CheckoutPage.btnFinish.click()
 

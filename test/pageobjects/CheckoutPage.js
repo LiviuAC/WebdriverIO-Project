@@ -1,6 +1,4 @@
 const {PageObject} = require("./PageObject");
-const LoginPage = require("./LoginPage");
-const {CREDENTIALS} = require("../helper/testData");
 const ProductsPage = require("./ProductsPage");
 const CartPage = require("./CartPage");
 
@@ -69,47 +67,6 @@ class CheckoutPage extends PageObject {
 
     get allItemsDescriptions() {
         return browser.$$('//div[@class="inventory_item_desc"]');
-    }
-
-    async addProductAndProceedToCheckout(option) {
-        switch(option){
-            case 'oneItem':
-                await ProductsPage.btnAddBackpack.click()
-                break
-            case 'multipleItems':
-                await ProductsPage.addMultipleItems()
-                break
-        }
-        await ProductsPage.shoppingCartIcon.click()
-        await CartPage.btnCheckout.click()
-    }
-
-    async checkoutProductData(data) {
-        switch(data){
-            case 'names':
-                let productsNamesText = []
-                const productNames = await this.allItemsName;
-                for (let i = 0; i < productNames.length; i++) {
-                    productsNamesText.push(await productNames[i].getText())
-                }
-                return productsNamesText
-            case 'prices':
-                let productsPrices = [];
-                const productPrice = await this.allItemsPrices;
-                let numberPrice
-                for (let i = 0; i < productPrice.length; i++) {
-                    numberPrice = await productPrice[i].getText()
-                    productsPrices.push(numberPrice.replace("$", ""));
-                }
-                return productsPrices
-            case 'descriptions':
-                let productsDetailsText = [];
-                const productDetail = await this.allItemsDescriptions;
-                for (let i = 0; i < productDetail.length; i++) {
-                    productsDetailsText.push(await productDetail[i].getText());
-                }
-                return productsDetailsText
-        }
     }
 
     // checkout complete
