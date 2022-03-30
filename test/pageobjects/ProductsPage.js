@@ -1,5 +1,6 @@
 const {PageObject} = require("./PageObject");
 const {ProductPrices} = require("../helper/inventoryData");
+const CartPage = require("./CartPage");
 
 class ProductsPage extends PageObject {
 
@@ -80,41 +81,6 @@ class ProductsPage extends PageObject {
         await this.btnAddBikeLight.click()
     }
 
-    async productData(data) {
-        switch(data){
-            case 'names':
-                let productsNamesText = []
-                const productNames = await this.allItemsName;
-                for (let i = 0; i < productNames.length; i++) {
-                    productsNamesText.push(await productNames[i].getText())
-                }
-                return productsNamesText
-            case 'prices':
-                let productsPrices = [];
-                const productPrice = await this.allItemsPrices;
-                let numberPrice
-                for (let i = 0; i < productPrice.length; i++) {
-                    numberPrice = await productPrice[i].getText()
-                    productsPrices.push(numberPrice.replace("$", ""));
-                }
-                return productsPrices
-            case 'images':
-                let productsImagesSource = [];
-                const productImage = await this.allItemsImages;
-                for (let i = 0; i < productImage.length; i++) {
-                    productsImagesSource.push(await productImage[i].getAttribute("src"));
-                }
-                return productsImagesSource
-            case 'descriptions':
-                let productsDetailsText = [];
-                const productDetail = await this.allItemsDescriptions;
-                for (let i = 0; i < productDetail.length; i++) {
-                    productsDetailsText.push(await productDetail[i].getText());
-                }
-                return productsDetailsText
-        }
-    }
-
     async addToCartButtons() {
         let addToCartButtons = [];
         const addToCart = await this.btnAddToCart;
@@ -140,6 +106,19 @@ class ProductsPage extends PageObject {
                 await this.btnZAName.click()
                 break
         }
+    }
+
+    async addProductAndProceedToCheckout(option) {
+        switch(option){
+            case 'oneItem':
+                await this.btnAddBackpack.click()
+                break
+            case 'multipleItems':
+                await this.addMultipleItems()
+                break
+        }
+        await this.shoppingCartIcon.click()
+        await CartPage.btnCheckout.click()
     }
 }
 

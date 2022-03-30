@@ -5,9 +5,9 @@ const CheckoutPage = require("../pageobjects/CheckoutPage");
 const {CREDENTIALS, checkoutURL} = require("../helper/testData");
 const {ImageSource} = require("../helper/inventoryData");
 
-describe(" Checkout Page Tests", () => {
+describe(" Checkout Step One Page Tests", () => {
 
-    describe("Checkout Page UI Tests", () => {
+    describe("Checkout Step One Page UI Tests", () => {
 
         beforeEach(async function () {
             await LoginPage.open();
@@ -68,7 +68,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should be able to continue with valid form inputs", async () => {
-            await CheckoutPage.fillForm("testFirstName","testLastName", "000000" )
+            await CheckoutPage.completeCheckoutStepOne("testFirstName","testLastName", "000000" )
 
             expect(await browser.getUrl()).toContain(checkoutURL.stepTwo);
         });
@@ -100,7 +100,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should not be able to continue with empty form inputs", async () => {
-            await CheckoutPage.fillForm("", "", "")
+            await CheckoutPage.completeCheckoutStepOne("", "", "")
 
             expect(await CheckoutPage.errorMessage.getText()).toEqual("Error: First Name is required");
             expect(await CheckoutPage.errorButton.isDisplayed()).toBe(true)
@@ -108,7 +108,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should not display the error message upon clicking on the close error button", async () => {
-            await CheckoutPage.fillForm("", "", "")
+            await CheckoutPage.completeCheckoutStepOne("", "", "")
             await CheckoutPage.errorButton.click()
 
             expect(await CheckoutPage.errorMessage.isDisplayed()).toBe(false);
@@ -116,7 +116,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should not be able to continue with empty First Name field", async () => {
-            await CheckoutPage.fillForm("", "testLastName", "000000")
+            await CheckoutPage.completeCheckoutStepOne("", "testLastName", "000000")
 
             expect(await CheckoutPage.errorMessage.getText()).toEqual("Error: First Name is required");
             expect(await CheckoutPage.errorButton.isDisplayed()).toBe(true)
@@ -124,7 +124,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should not be able to continue with empty Last Name field", async () => {
-            await CheckoutPage.fillForm("testFirstName", "", "000000")
+            await CheckoutPage.completeCheckoutStepOne("testFirstName", "", "000000")
 
             expect(await CheckoutPage.errorMessage.getText()).toEqual("Error: Last Name is required");
             expect(await CheckoutPage.errorButton.isDisplayed()).toBe(true)
@@ -132,7 +132,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should not be able to continue with empty Zip/Postal Code field", async () => {
-            await CheckoutPage.fillForm("testFirstName", "testLastName", "")
+            await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "")
 
             expect(await CheckoutPage.errorMessage.getText()).toEqual("Error: Postal Code is required");
             expect(await CheckoutPage.errorButton.isDisplayed()).toBe(true)
@@ -140,7 +140,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should not be able to continue 5 numbers in Zip/Postal Code field", async () => {
-            await CheckoutPage.fillForm("testFirstName", "testLastName", "00000")
+            await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "00000")
 
             expect(await CheckoutPage.errorMessage.isDisplayed()).toBe(true);
             expect(await CheckoutPage.errorButton.isDisplayed()).toBe(true)
@@ -148,7 +148,7 @@ describe(" Checkout Page Tests", () => {
         });
 
         it("should not be able to continue with letters in Zip/Postal Code field", async () => {
-            await CheckoutPage.fillForm("testFirstName", "testLastName", "testZipCode")
+            await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "testZipCode")
 
             expect(await CheckoutPage.errorMessage.isDisplayed()).toBe(true);
             expect(await CheckoutPage.errorButton.isDisplayed()).toBe(true)

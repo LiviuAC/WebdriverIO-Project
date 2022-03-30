@@ -34,8 +34,8 @@ describe(" Cart Page Tests", () => {
 
         it("check cart contents container UI elements", async () => {
 
-            expect(await CartPage.cartQuantityLabelText.getText()).toEqual("QTY");
-            expect(await CartPage.cartDescriptionLabelText.getText()).toEqual("DESCRIPTION");
+            expect(await CartPage.quantityLabelText.getText()).toEqual("QTY");
+            expect(await CartPage.descriptionLabelText.getText()).toEqual("DESCRIPTION");
             expect(await CartPage.btnContinueShopping.isDisplayed()).toBe(true);
             expect(await CartPage.btnCheckout.isDisplayed()).toBe(true);
             expect(await ProductsPage.btnRemoveBackpack.isDisplayed()).toBe(false);

@@ -1,4 +1,6 @@
 const {PageObject} = require("./PageObject");
+const ProductsPage = require("./ProductsPage");
+const CartPage = require("./CartPage");
 
 class CheckoutPage extends PageObject {
 
@@ -23,15 +25,11 @@ class CheckoutPage extends PageObject {
         return browser.$("//input[@id='postal-code']");
     }
 
-    get btnCancel() {
-        return browser.$("//button[@id='cancel']");
-    }
-
     get btnContinue() {
         return browser.$("//input[@id='continue']");
     }
 
-    async fillForm(firstName, lastName, zipCodeText) {
+    async completeCheckoutStepOne(firstName, lastName, zipCodeText) {
         await this.firstNameText.setValue(firstName)
         await this.lastNameText.setValue(lastName)
         await this.zipCodeText.setValue(zipCodeText)
@@ -39,6 +37,41 @@ class CheckoutPage extends PageObject {
 
     // checkout step two
 
+    get summaryInfoText() {
+        return browser.$("//div[@class='summary_info']");
+    }
+
+    get btnFinish() {
+        return browser.$("//button[@id='finish']");
+    }
+
+    get itemTotalPriceText() {
+        return browser.$("//div[@class='summary_subtotal_label']");
+    }
+    get taxPriceText() {
+        return browser.$("//div[@class='summary_tax_label']");
+    }
+    get totalPriceText() {
+        return browser.$("//div[@class='summary_total_label']");
+    }
+
+    get allItemsName() {
+        return browser.$$("//div[@class='inventory_item_name']");
+    }
+
+    get allItemsPrices() {
+        return browser.$$("//div[@class = 'inventory_item_price']");
+    }
+
+    get allItemsDescriptions() {
+        return browser.$$('//div[@class="inventory_item_desc"]');
+    }
+
+    // checkout complete
+
+    get btnBackHome() {
+        return browser.$("//button[@id='back-to-products']");
+    }
 }
 
 module.exports = new CheckoutPage();

@@ -9,4 +9,5 @@ exports.CREDENTIALS = {
 exports.checkoutURL = {
     stepOne: 'checkout-step-one.html',
     stepTwo: 'checkout-step-two.html',
+    complete: 'checkout-complete.html'
 }
