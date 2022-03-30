@@ -12,7 +12,7 @@ describe(" Checkout Complete Page Tests", () => {
         beforeEach(async function () {
             await LoginPage.open();
             await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
-            await CheckoutPage.addProductAndProceedToCheckout("oneItem")
+            await ProductsPage.addProductAndProceedToCheckout("oneItem")
             await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
             await CheckoutPage.btnFinish.click()
         });
@@ -62,7 +62,7 @@ describe(" Checkout Complete Page Tests", () => {
             beforeEach(async function () {
                 await LoginPage.open();
                 await LoginPage.login(CREDENTIALS.standard, CREDENTIALS.password);
-                await CheckoutPage.addProductAndProceedToCheckout("oneItem")
+                await ProductsPage.addProductAndProceedToCheckout("oneItem")
                 await CheckoutPage.completeCheckoutStepOne("testFirstName", "testLastName", "000000")
                 await CheckoutPage.btnFinish.click()
             });
