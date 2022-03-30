@@ -34,9 +34,9 @@ describe('Footer Icons Functionality Tests', () => {
     it("the 'LinkedIn' icon should redirect to the Sauce Labs LinkedIn url", async () => {
         await ProductsPage.linkedInIcon.waitForClickable()
         await ProductsPage.linkedInIcon.click()
-        await browser.switchWindow("https://www.linkedin.com/company/sauce-labs/")
+        await browser.switchWindow("linkedin")
 
-        expect(await browser.getUrl()).toEqual("https://www.linkedin.com/company/sauce-labs/");
+        expect(await browser.getUrl()).toContain("https://www.linkedin.com/");
         await ProductsPage.closeWindowAndSwitchBack()
     })
 })

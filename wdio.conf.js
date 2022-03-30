@@ -24,8 +24,16 @@ exports.config = {
     // will be called from there.
     //
     specs: [
+        './test/specs/smokeTest.js',
         './test/specs/login.js',
-        './test/specs/products.js'
+        './test/specs/products.js',
+        './test/specs/productDetails.js',
+        './test/specs/burgerMenu.js',
+        './test/specs/footerIconsFunctionalityTests.js',
+        './test/specs/cartPage.js',
+        './test/specs/checkoutStepOnePage.js',
+        './test/specs/checkoutStepTwoPage.js',
+        './test/specs/checkoutCompletePage.js'
     ],
 
     suites: {
@@ -37,9 +45,6 @@ exports.config = {
         ],
         products: [
             './test/specs/products.js',
-            // './test/specs/productDetails.js'
-        ],
-        productDetails: [
             './test/specs/productDetails.js'
         ],
         burgerMenu: [
@@ -51,11 +56,10 @@ exports.config = {
         cartPage: [
             './test/specs/cartPage.js'
         ],
-        checkoutStepOnePage: [
-            './test/specs/checkoutStepOnePage.js'
-        ],
-        checkoutStepTwoPage: [
-            './test/specs/checkoutStepTwoPage.js'
+        checkout: [
+            './test/specs/checkoutStepOnePage.js',
+            './test/specs/checkoutStepTwoPage.js',
+            './test/specs/checkoutCompletePage.js'
         ],
     },
     // Patterns to exclude.
@@ -78,7 +82,7 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 10,
+    maxInstances: 2,
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
